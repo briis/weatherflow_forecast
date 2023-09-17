@@ -1,0 +1,30 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "[%key:common::config_flow::data::location%]",
+                "description": "WeatherFlow Forecast",
+                "data": {
+                    "name": "[%key:common::config_flow::data::name%]",
+                    "station_id": "Station ID for WeatherFlow Station",
+                    "api_token": "Personal API Token for WeatherFlow Data"
+                }
+            }
+        },
+        "error": {
+            "already_configured": "[%key:common::config_flow::abort::already_configured_service%]"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "[%key:common::config_flow::data::location%]",
+                "data": {
+                    "name": "[%key:common::config_flow::data::name%]",
+                    "station_id": "Station ID for WeatherFlow Station",
+                    "api_token": "Personal API Token for WeatherFlow Data"
+                }
+            }
+        }
+    }
+}
