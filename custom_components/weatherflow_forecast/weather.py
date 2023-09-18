@@ -1,7 +1,8 @@
 """Support for WeatherFlow Forecast weather service."""
 from __future__ import annotations
 
-from typing import Any
+from types import MappingProxyType
+from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.weather import (
     ATTR_FORECAST_CONDITION,
@@ -33,7 +34,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
 from . import WeatherFlowForecastDataUpdateCoordinator
-from .const import DOMAIN, CONF_API_TOKEN, CONF_STATION_ID
+from .const import ATTR_MAP, DOMAIN, CONF_API_TOKEN, CONF_STATION_ID
 
 DEFAULT_NAME = "WeatherFlow Forecast"
 
@@ -46,10 +47,35 @@ async def async_setup_entry(
     coordinator: WeatherFlowForecastDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     entity_registry = er.async_get(hass)
 
+    name: str | None
+    is_metric = hass.config.units is METRIC_SYSTEM
+
+    if (name := config_entry.data.get(CONF_NAME)) and name is None:
+        name = DEFAULT_NAME
+    elif TYPE_CHECKING:
+        assert isinstance(name, str)
+
     entities = [WeatherFlowWeather(coordinator, config_entry.data,
                                    hass.config.units is METRIC_SYSTEM, False)]
 
+    # Add hourly entity to legacy config entries
+    if entity_registry.async_get_entity_id(
+        WEATHER_DOMAIN,
+        DOMAIN,
+        _calculate_unique_id(config_entry.data, True)
+    ):
+        name = f"{name} hourly"
+        entities.append(WeatherFlowWeather(coordinator, config_entry.data, True, name, is_metric))
+
     async_add_entities(entities)
+
+def _calculate_unique_id(config: MappingProxyType[str, Any], hourly: bool) -> str:
+    """Calculate unique ID."""
+    name_appendix = ""
+    if hourly:
+        name_appendix = "-hourly"
+
+    return f"{config[CONF_STATION_ID]}{name_appendix}"
 
 class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataUpdateCoordinator]):
     """Implementation of a WeatherFlow weather condition."""
@@ -65,3 +91,85 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
     _attr_supported_features = (
         WeatherEntityFeature.FORECAST_DAILY | WeatherEntityFeature.FORECAST_HOURLY
     )
+
+    def __init__(
+            self,
+            coordinator: WeatherFlowForecastDataUpdateCoordinator,
+            config: MappingProxyType[str, Any],
+            hourly: bool,
+            name: str,
+            is_metric: bool,
+    ) -> None:
+        """Initialise the platform with a data instance and station."""
+        super().__init__(coordinator)
+        self._attr_unique_id = _calculate_unique_id(config, hourly)
+        self._config = config
+        self._is_metric = is_metric
+        self._hourly = hourly
+        self._attr_entity_registry_enabled_default = not hourly
+        self._attr_device_info = DeviceInfo(
+            name = "Forecast",
+            entry_type=DeviceEntryType.SERVICE,
+            identifiers={(DOMAIN,)},  # type: ignore[arg-type]
+            manufacturer="WeatherFlow",
+            model="Forecast",
+            configuration_url="https://weatherflow.github.io/Tempest/api/",
+        )
+        self._attr_name = name
+
+        @property
+        def condition(self) -> str | None:
+            """Return the current condition."""
+            condition = self.coordinator.data.current_weather_data.get("condition")
+            if condition is None:
+                return None
+            return condition
+
+        @property
+        def native_temperature(self) -> float | None:
+            """Return the temperature."""
+            return self.coordinator.data.current_weather_data.get(
+                ATTR_MAP[ATTR_WEATHER_TEMPERATURE]
+            )
+
+        @property
+        def native_pressure(self) -> float | None:
+            """Return the pressure."""
+            return self.coordinator.data.current_weather_data.get(
+                ATTR_MAP[ATTR_WEATHER_PRESSURE]
+            )
+
+        @property
+        def humidity(self) -> float | None:
+            """Return the humidity."""
+            return self.coordinator.data.current_weather_data.get(
+                ATTR_MAP[ATTR_WEATHER_HUMIDITY]
+            )
+
+        @property
+        def native_wind_speed(self) -> float | None:
+            """Return the wind speed."""
+            return self.coordinator.data.current_weather_data.get(
+                ATTR_MAP[ATTR_WEATHER_WIND_SPEED]
+            )
+
+        @property
+        def wind_bearing(self) -> float | str | None:
+            """Return the wind direction."""
+            return self.coordinator.data.current_weather_data.get(
+                ATTR_MAP[ATTR_WEATHER_WIND_BEARING]
+            )
+
+        @property
+        def native_wind_gust_speed(self) -> float | None:
+            """Return the wind gust speed in native units."""
+            return self.coordinator.data.current_weather_data.get(
+                ATTR_MAP[ATTR_WEATHER_WIND_GUST_SPEED]
+            )
+
+        @property
+        def native_dew_point(self) -> float | None:
+            """Return the dew point."""
+            return self.coordinator.data.current_weather_data.get(
+                ATTR_MAP[ATTR_WEATHER_DEW_POINT]
+            )
