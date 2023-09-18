@@ -1,7 +1,6 @@
 """WeatherFlow Forecast Platform."""
 from __future__ import annotations
 
-from collections.abc import Callable
 from datetime import timedelta
 import logging
 from random import randrange
@@ -16,12 +15,11 @@ from pyweatherflow_forecast import (
 )
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_ID, EVENT_CORE_CONFIG_UPDATE, Platform
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from homeassistant.util import dt as dt_util
 
 from .const import (
     DOMAIN,
