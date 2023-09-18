@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.weather import (
     ATTR_FORECAST_CONDITION,
-    ATTR_FORECAST_TIME,
     ATTR_WEATHER_DEW_POINT,
     ATTR_WEATHER_HUMIDITY,
     ATTR_WEATHER_PRESSURE,
@@ -34,7 +33,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
 from . import WeatherFlowForecastDataUpdateCoordinator
-from .const import ATTR_MAP, DOMAIN, CONF_API_TOKEN, CONF_STATION_ID
+from .const import ATTR_FORECAST_TIME, ATTR_MAP, DOMAIN, CONF_API_TOKEN, CONF_STATION_ID
 
 DEFAULT_NAME = "WeatherFlow Forecast"
 
@@ -108,7 +107,7 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
         self._hourly = hourly
         self._attr_entity_registry_enabled_default = not hourly
         self._attr_device_info = DeviceInfo(
-            name = "Forecast",
+            name="Forecast",
             entry_type=DeviceEntryType.SERVICE,
             identifiers={(DOMAIN,)},  # type: ignore[arg-type]
             manufacturer="WeatherFlow",
@@ -117,59 +116,83 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
         )
         self._attr_name = name
 
-        @property
-        def condition(self) -> str | None:
-            """Return the current condition."""
-            condition = self.coordinator.data.current_weather_data.get("condition")
-            if condition is None:
-                return None
-            return condition
+    @property
+    def condition(self) -> str | None:
+        """Return the current condition."""
+        condition = self.coordinator.data.current_weather_data.get("condition")
+        if condition is None:
+            return None
+        return condition
 
-        @property
-        def native_temperature(self) -> float | None:
-            """Return the temperature."""
-            return self.coordinator.data.current_weather_data.get(
-                ATTR_MAP[ATTR_WEATHER_TEMPERATURE]
-            )
+    @property
+    def native_temperature(self) -> float | None:
+        """Return the temperature."""
+        return self.coordinator.data.current_weather_data.get(
+            ATTR_MAP[ATTR_WEATHER_TEMPERATURE]
+        )
 
-        @property
-        def native_pressure(self) -> float | None:
-            """Return the pressure."""
-            return self.coordinator.data.current_weather_data.get(
-                ATTR_MAP[ATTR_WEATHER_PRESSURE]
-            )
+    @property
+    def native_pressure(self) -> float | None:
+        """Return the pressure."""
+        return self.coordinator.data.current_weather_data.get(
+            ATTR_MAP[ATTR_WEATHER_PRESSURE]
+        )
 
-        @property
-        def humidity(self) -> float | None:
-            """Return the humidity."""
-            return self.coordinator.data.current_weather_data.get(
-                ATTR_MAP[ATTR_WEATHER_HUMIDITY]
-            )
+    @property
+    def humidity(self) -> float | None:
+        """Return the humidity."""
+        return self.coordinator.data.current_weather_data.get(
+            ATTR_MAP[ATTR_WEATHER_HUMIDITY]
+        )
 
-        @property
-        def native_wind_speed(self) -> float | None:
-            """Return the wind speed."""
-            return self.coordinator.data.current_weather_data.get(
-                ATTR_MAP[ATTR_WEATHER_WIND_SPEED]
-            )
+    @property
+    def native_wind_speed(self) -> float | None:
+        """Return the wind speed."""
+        return self.coordinator.data.current_weather_data.get(
+            ATTR_MAP[ATTR_WEATHER_WIND_SPEED]
+        )
 
-        @property
-        def wind_bearing(self) -> float | str | None:
-            """Return the wind direction."""
-            return self.coordinator.data.current_weather_data.get(
-                ATTR_MAP[ATTR_WEATHER_WIND_BEARING]
-            )
+    @property
+    def wind_bearing(self) -> float | str | None:
+        """Return the wind direction."""
+        return self.coordinator.data.current_weather_data.get(
+            ATTR_MAP[ATTR_WEATHER_WIND_BEARING]
+        )
 
-        @property
-        def native_wind_gust_speed(self) -> float | None:
-            """Return the wind gust speed in native units."""
-            return self.coordinator.data.current_weather_data.get(
-                ATTR_MAP[ATTR_WEATHER_WIND_GUST_SPEED]
-            )
+    @property
+    def native_wind_gust_speed(self) -> float | None:
+        """Return the wind gust speed in native units."""
+        return self.coordinator.data.current_weather_data.get(
+            ATTR_MAP[ATTR_WEATHER_WIND_GUST_SPEED]
+        )
 
-        @property
-        def native_dew_point(self) -> float | None:
-            """Return the dew point."""
-            return self.coordinator.data.current_weather_data.get(
-                ATTR_MAP[ATTR_WEATHER_DEW_POINT]
-            )
+    @property
+    def native_dew_point(self) -> float | None:
+        """Return the dew point."""
+        return self.coordinator.data.current_weather_data.get(
+            ATTR_MAP[ATTR_WEATHER_DEW_POINT]
+        )
+
+    def _forecast(self, hourly: bool) -> list[Forecast] | None:
+        """Return the forecast array."""
+        if hourly:
+            wf_forecast = self.coordinator.data.hourly_forecast
+        else:
+            wf_forecast = self.coordinator.data.daily_forecast
+
+        return wf_forecast
+
+    @property
+    def forecast(self) -> list[Forecast] | None:
+        """Return the forecast array."""
+        return self._forecast(self._hourly)
+
+    @callback
+    def _async_forecast_daily(self) -> list[Forecast] | None:
+        """Return the daily forecast in native units."""
+        return self._forecast(False)
+
+    @callback
+    def _async_forecast_hourly(self) -> list[Forecast] | None:
+        """Return the hourly forecast in native units."""
+        return self._forecast(True)
