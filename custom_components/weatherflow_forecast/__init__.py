@@ -72,6 +72,7 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlo
     def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry) -> None:
         """Initialize global Met data updater."""
         self.weather = WeatherFlowForecastWeatherData(hass, config_entry.data)
+        self.weather.initialize_data()
 
         update_interval = timedelta(minutes=randrange(55, 65))
 
