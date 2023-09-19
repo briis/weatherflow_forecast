@@ -5,14 +5,6 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.weather import (
-    ATTR_FORECAST_CONDITION,
-    ATTR_WEATHER_DEW_POINT,
-    ATTR_WEATHER_HUMIDITY,
-    ATTR_WEATHER_PRESSURE,
-    ATTR_WEATHER_TEMPERATURE,
-    ATTR_WEATHER_WIND_BEARING,
-    ATTR_WEATHER_WIND_GUST_SPEED,
-    ATTR_WEATHER_WIND_SPEED,
     DOMAIN as WEATHER_DOMAIN,
     Forecast,
     SingleCoordinatorWeatherEntity,
@@ -33,7 +25,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
 from . import WeatherFlowForecastDataUpdateCoordinator
-from .const import ATTR_FORECAST_TIME, ATTR_MAP, DOMAIN, CONF_API_TOKEN, CONF_STATION_ID
+from .const import DOMAIN, CONF_API_TOKEN, CONF_STATION_ID
 
 DEFAULT_NAME = "WeatherFlow Forecast"
 
@@ -55,7 +47,7 @@ async def async_setup_entry(
         assert isinstance(name, str)
 
     entities = [WeatherFlowWeather(coordinator, config_entry.data,
-                                   hass.config.units is METRIC_SYSTEM, False)]
+                                   False, name, is_metric)]
 
     # Add hourly entity to legacy config entries
     if entity_registry.async_get_entity_id(
@@ -119,7 +111,7 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
-        condition = self.coordinator.data.current_weather_data.get("condition")
+        condition = self.coordinator.data.current_weather_data.icon
         if condition is None:
             return None
         return condition
@@ -127,60 +119,95 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
     @property
     def native_temperature(self) -> float | None:
         """Return the temperature."""
-        return self.coordinator.data.current_weather_data.get(
-            ATTR_MAP[ATTR_WEATHER_TEMPERATURE]
-        )
+        return self.coordinator.data.current_weather_data.temperature
 
     @property
     def native_pressure(self) -> float | None:
         """Return the pressure."""
-        return self.coordinator.data.current_weather_data.get(
-            ATTR_MAP[ATTR_WEATHER_PRESSURE]
-        )
+        return self.coordinator.data.current_weather_data.pressure
 
     @property
     def humidity(self) -> float | None:
         """Return the humidity."""
-        return self.coordinator.data.current_weather_data.get(
-            ATTR_MAP[ATTR_WEATHER_HUMIDITY]
-        )
+        return self.coordinator.data.current_weather_data.humidity
 
     @property
     def native_wind_speed(self) -> float | None:
         """Return the wind speed."""
-        return self.coordinator.data.current_weather_data.get(
-            ATTR_MAP[ATTR_WEATHER_WIND_SPEED]
-        )
+        return self.coordinator.data.current_weather_data.wind_speed
 
     @property
     def wind_bearing(self) -> float | str | None:
         """Return the wind direction."""
-        return self.coordinator.data.current_weather_data.get(
-            ATTR_MAP[ATTR_WEATHER_WIND_BEARING]
-        )
+        return self.coordinator.data.current_weather_data.wind_bearing
 
     @property
     def native_wind_gust_speed(self) -> float | None:
         """Return the wind gust speed in native units."""
-        return self.coordinator.data.current_weather_data.get(
-            ATTR_MAP[ATTR_WEATHER_WIND_GUST_SPEED]
-        )
+        return self.coordinator.data.current_weather_data.wind_gust_speed
 
     @property
     def native_dew_point(self) -> float | None:
         """Return the dew point."""
-        return self.coordinator.data.current_weather_data.get(
-            ATTR_MAP[ATTR_WEATHER_DEW_POINT]
-        )
+        return self.coordinator.data.current_weather_data.dew_point
 
     def _forecast(self, hourly: bool) -> list[Forecast] | None:
         """Return the forecast array."""
-        if hourly:
-            wf_forecast = self.coordinator.data.hourly_forecast
-        else:
-            wf_forecast = self.coordinator.data.daily_forecast
+        ha_forecast: list[Forecast] = []
 
-        return wf_forecast
+        if hourly:
+            for item in self.coordinator.data.hourly_forecast:
+                condition = item.icon
+                datetime = item.datetime.isoformat()
+                humidity = item.humidity
+                precipitation_probability = item.precipitation_probability
+                native_precipitation = item.precipitation
+                native_pressure = item.pressure
+                native_temperature = item.temperature
+                native_apparent_temperature = item.apparent_temperature
+                wind_bearing = item.wind_bearing
+                native_wind_gust_speed = item.wind_gust_speed
+                native_wind_speed = item.wind_speed
+                uv_index = item.uv_index
+
+                ha_item = {
+                    "condition": condition,
+                    "datetime": datetime,
+                    "humidity": humidity,
+                    "precipitation_probability": precipitation_probability,
+                    "native_precipitation": native_precipitation,
+                    "precipitation": native_precipitation,
+                    "native_pressure": native_pressure,
+                    "pressure": native_pressure,
+                    "native_temperature": native_temperature,
+                    "temperature": native_temperature,
+                    "native_apparent_temperature": native_apparent_temperature,
+                    "wind_bearing": wind_bearing,
+                    "native_wind_gust_speed": native_wind_gust_speed,
+                    "native_wind_speed": native_wind_speed,
+                    "wind_speed": native_wind_speed,
+                    "uv_index": uv_index,
+                }
+                ha_forecast.append(ha_item)
+        else:
+            for item in self.coordinator.data.daily_forecast:
+                condition = item.icon
+                datetime = item.datetime.isoformat()
+                precipitation_probability = item.precipitation_probability
+                native_temperature = item.temperature
+                native_templow = item.temp_low
+
+                ha_item = {
+                    "condition": condition,
+                    "datetime": datetime,
+                    "precipitation_probability": precipitation_probability,
+                    "native_temperature": native_temperature,
+                    "temperature": native_temperature,
+                    "native_templow": native_templow,
+                }
+                ha_forecast.append(ha_item)
+
+        return ha_forecast
 
     @property
     def forecast(self) -> list[Forecast] | None:
