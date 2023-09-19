@@ -25,7 +25,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
 from . import WeatherFlowForecastDataUpdateCoordinator
-from .const import DOMAIN, CONF_API_TOKEN, CONF_STATION_ID
+from .const import DOMAIN, CONF_STATION_ID
 
 DEFAULT_NAME = "WeatherFlow Forecast"
 
@@ -176,16 +176,12 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
                     "humidity": humidity,
                     "precipitation_probability": precipitation_probability,
                     "native_precipitation": native_precipitation,
-                    "precipitation": native_precipitation,
                     "native_pressure": native_pressure,
-                    "pressure": native_pressure,
                     "native_temperature": native_temperature,
-                    "temperature": native_temperature,
                     "native_apparent_temperature": native_apparent_temperature,
                     "wind_bearing": wind_bearing,
                     "native_wind_gust_speed": native_wind_gust_speed,
                     "native_wind_speed": native_wind_speed,
-                    "wind_speed": native_wind_speed,
                     "uv_index": uv_index,
                 }
                 ha_forecast.append(ha_item)
@@ -202,7 +198,6 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
                     "datetime": datetime,
                     "precipitation_probability": precipitation_probability,
                     "native_temperature": native_temperature,
-                    "temperature": native_temperature,
                     "native_templow": native_templow,
                 }
                 ha_forecast.append(ha_item)

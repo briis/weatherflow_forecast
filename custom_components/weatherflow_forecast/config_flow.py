@@ -5,7 +5,7 @@ import logging
 import voluptuous as vol
 from typing import Any
 from homeassistant import config_entries
-from homeassistant.const import CONF_ID
+from homeassistant.const import CONF_NAME
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
@@ -54,7 +54,7 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_create_entry(
             title=station_data.station_name,
             data={
-                CONF_ID: station_data.station_name,
+                CONF_NAME: station_data.station_name,
                 CONF_STATION_ID: user_input[CONF_STATION_ID],
                 CONF_API_TOKEN: user_input[CONF_API_TOKEN],
             }
@@ -91,8 +91,7 @@ class WeatherFlowForecastOptionsFlowHandler(config_entries.OptionsFlow):
             step_id="init",
             data_schema=vol.Schema(
                 {
-                    vol.Required(CONF_STATION_ID, default=self._config_entry.options.get(CONF_STATION_ID, 0)): int,
-                    vol.Required(CONF_API_TOKEN, default=self._config_entry.options.get(CONF_API_TOKEN, "")): str,
+                    vol.Required(CONF_API_TOKEN, default=self._config_entry.data.get(CONF_API_TOKEN, "")): str,
                 }
             )
         )

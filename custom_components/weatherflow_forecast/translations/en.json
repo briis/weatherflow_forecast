@@ -24,7 +24,6 @@
         "step": {
             "init": {
                 "data": {
-                    "station_id": "Station Id",
                     "api_token": "Personal Api Token"
                 }
             }
