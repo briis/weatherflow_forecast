@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 from homeassistant.components.weather import (
     DOMAIN as WEATHER_DOMAIN,
@@ -204,10 +204,13 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
 
         return ha_forecast
 
-    @property
-    def forecast(self) -> list[Forecast] | None:
-        """Return the forecast array."""
-        return self._forecast(self._hourly)
+    # For backwards compatability, uncomment the below.
+    # Will stop working with HA 2024.3
+
+    # @property
+    # def forecast(self) -> list[Forecast] | None:
+    #     """Return the forecast array."""
+    #     return self._forecast(self._hourly)
 
     @callback
     def _async_forecast_daily(self) -> list[Forecast] | None:

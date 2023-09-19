@@ -108,7 +108,6 @@ class WeatherFlowForecastWeatherData:
         resp: WeatherFlowForecastData = await self._weather_data.async_get_forecast()
         if not resp:
             raise CannotConnect()
-        _LOGGER.info(resp)
         self.current_weather_data = resp
         self.daily_forecast = resp.forecast_daily
         self.hourly_forecast = resp.forecast_hourly
