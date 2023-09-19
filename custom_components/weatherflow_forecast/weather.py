@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.weather import (
     DOMAIN as WEATHER_DOMAIN,
