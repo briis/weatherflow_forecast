@@ -11,4 +11,3 @@ Date: `Not Released`
 
 ### TODO
 
-- Error handling when setting up a new station does not capture all instances. (Station id with wrong API key)
