@@ -23,6 +23,7 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util.unit_system import METRIC_SYSTEM
+from homeassistant.util.dt import utc_from_timestamp
 
 from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import DOMAIN, CONF_STATION_ID
@@ -158,7 +159,7 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
         if hourly:
             for item in self.coordinator.data.hourly_forecast:
                 condition = item.icon
-                datetime = item.datetime.isoformat()
+                datetime = utc_from_timestamp(item.timestamp).isoformat()
                 humidity = item.humidity
                 precipitation_probability = item.precipitation_probability
                 native_precipitation = item.precipitation
@@ -188,7 +189,7 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
         else:
             for item in self.coordinator.data.daily_forecast:
                 condition = item.icon
-                datetime = item.datetime.isoformat()
+                datetime = utc_from_timestamp(item.timestamp).isoformat()
                 precipitation_probability = item.precipitation_probability
                 native_temperature = item.temperature
                 native_templow = item.temp_low
