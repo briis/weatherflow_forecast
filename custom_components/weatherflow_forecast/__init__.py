@@ -12,12 +12,16 @@ from pyweatherflow_forecast import (
     WeatherFlowForecastData,
     WeatherFlowForecastDaily,
     WeatherFlowForecastHourly,
+    WeatherFlowForecastUnauthorized,
+    WeatherFlowForecastBadRequest,
+    WeatherFlowForecastInternalServerError,
+    WeatherFlowForecastWongStationId,
 )
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import HomeAssistantError
+from homeassistant.exceptions import HomeAssistantError, ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
@@ -105,7 +109,22 @@ class WeatherFlowForecastWeatherData:
 
     async def fetch_data(self) -> Self:
         """Fetch data from API - (current weather and forecast)."""
-        resp: WeatherFlowForecastData = await self._weather_data.async_get_forecast()
+
+        try:
+            resp: WeatherFlowForecastData = await self._weather_data.async_get_forecast()
+        except WeatherFlowForecastWongStationId as err:
+            _LOGGER.debug(err)
+            return False
+        except WeatherFlowForecastBadRequest as err:
+            _LOGGER.debug(err)
+            return False
+        except WeatherFlowForecastUnauthorized as err:
+            _LOGGER.debug(err)
+            return False
+        except WeatherFlowForecastInternalServerError as notreadyerror:
+            _LOGGER.debug(notreadyerror)
+            raise ConfigEntryNotReady from notreadyerror
+
         if not resp:
             raise CannotConnect()
         self.current_weather_data = resp
