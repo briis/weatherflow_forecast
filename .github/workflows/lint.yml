@@ -2,6 +2,10 @@ name: "Lint"
 
 on:
   push:
+    paths-ignore:
+      - "**/README.md"
+      - "**/info.md"
+      - "**/CHANGELOG.md"
     branches:
       - "main"
   pull_request:
