@@ -76,7 +76,7 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlo
         self.weather = WeatherFlowForecastWeatherData(hass, config_entry.data)
         self.weather.initialize_data()
 
-        update_interval = timedelta(minutes=randrange(55, 65))
+        update_interval = timedelta(minutes=randrange(25, 35))
 
         super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=update_interval)
 
