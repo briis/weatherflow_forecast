@@ -64,7 +64,7 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
             errors["base"] = "server_error"
             return await self._show_setup_form(errors)
         except WeatherFlowForecastUnauthorized as err:
-            _LOGGER.debug(err)
+            _LOGGER.debug("401 Error: %s", err)
             errors["base"] = "wrong_token"
             return await self._show_setup_form(errors)
 

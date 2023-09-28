@@ -21,7 +21,7 @@ from pyweatherflow_forecast import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import HomeAssistantError, ConfigEntryNotReady
+from homeassistant.exceptions import HomeAssistantError, ConfigEntryNotReady, Unauthorized
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
@@ -112,15 +112,15 @@ class WeatherFlowForecastWeatherData:
 
         try:
             resp: WeatherFlowForecastData = await self._weather_data.async_get_forecast()
-        except WeatherFlowForecastWongStationId as err:
-            _LOGGER.debug(err)
-            return False
+        except WeatherFlowForecastWongStationId as unauthorized:
+            _LOGGER.debug(unauthorized)
+            raise Unauthorized from unauthorized
         except WeatherFlowForecastBadRequest as err:
             _LOGGER.debug(err)
             return False
-        except WeatherFlowForecastUnauthorized as err:
-            _LOGGER.debug(err)
-            return False
+        except WeatherFlowForecastUnauthorized as unauthorized:
+            _LOGGER.debug(unauthorized)
+            raise Unauthorized from unauthorized
         except WeatherFlowForecastInternalServerError as notreadyerror:
             _LOGGER.debug(notreadyerror)
             raise ConfigEntryNotReady from notreadyerror
