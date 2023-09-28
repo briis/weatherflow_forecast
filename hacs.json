@@ -1,5 +1,5 @@
 {
     "name": "WeatherFlow Forecast Integration",
     "homeassistant": "2023.9.0",
-    "render_readme": true
+    "render_readme": false
 }
