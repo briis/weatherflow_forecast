@@ -1,21 +1,39 @@
-name: HACS Action
+name: "Validate"
 
 on:
+  workflow_dispatch:
+  schedule:
+    - cron:  "0 0 * * *"
   push:
     paths-ignore:
-      - '**/README.md'
-      - '**/CHANGELOG.md'
+      - "**/README.md"
+      - "**/info.md"
+      - "**/CHANGELOG.md"
+    branches:
+      - "main"
   pull_request:
-  schedule:
-    - cron: "0 0 * * *"
+    branches:
+      - "main"
 
 jobs:
-  hacs:
-    name: HACS Action
+  hassfest: # https://developers.home-assistant.io/blog/2020/04/16/hassfest
+    name: "Hassfest Validation"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v3"
-      - name: HACS Action
-        uses: "hacs/action@main"
-        with:
-          category: "integration"
+        - name: "Checkout the repository"
+          uses: "actions/checkout@v4.0.0"
+
+        - name: "Run hassfest validation"
+          uses: "home-assistant/actions/hassfest@master"
+
+  hacs: # https://github.com/hacs/action
+    name: "HACS Validation"
+    runs-on: "ubuntu-latest"
+    steps:
+        - name: "Checkout the repository"
+          uses: "actions/checkout@v4.0.0"
+
+        - name: "Run HACS validation"
+          uses: "hacs/action@main"
+          with:
+            category: "integration"
