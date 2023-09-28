@@ -9,8 +9,14 @@ from homeassistant.const import CONF_NAME
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
-from pyweatherflow_forecast import WeatherFlow, WeatherFlowStationData
-
+from pyweatherflow_forecast import (
+    WeatherFlow,
+    WeatherFlowStationData,
+    WeatherFlowForecastBadRequest,
+    WeatherFlowForecastInternalServerError,
+    WeatherFlowForecastUnauthorized,
+    WeatherFlowForecastWongStationId,
+)
 from .const import (
     DOMAIN,
     CONF_API_TOKEN,
@@ -45,7 +51,21 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
             station_data: WeatherFlowStationData = await weatherflow_api.async_get_station()
 
-        except:
+        except WeatherFlowForecastWongStationId as err:
+            _LOGGER.debug(err)
+            errors["base"] = "wrong_station_id"
+            return await self._show_setup_form(errors)
+        except WeatherFlowForecastBadRequest as err:
+            _LOGGER.debug(err)
+            errors["base"] = "bad_request"
+            return await self._show_setup_form(errors)
+        except WeatherFlowForecastInternalServerError as err:
+            _LOGGER.debug(err)
+            errors["base"] = "server_error"
+            return await self._show_setup_form(errors)
+        except WeatherFlowForecastUnauthorized as err:
+            _LOGGER.debug(err)
+            errors["base"] = "wrong_token"
             return await self._show_setup_form(errors)
 
         await self.async_set_unique_id(user_input[CONF_STATION_ID])
