@@ -21,29 +21,6 @@ Platform | Description
 
 Minimum required version of Home Assistant is **2023.9.0** as this integration uses the new Weather entity forecast types and it does **not** create Forecast Attributes.
 
-## Installation through HACS (Recommended Method)
-
-This Integration is not yet part of the default HACS store, but can still be installed through HACS.
-
-- Open HACS, click integrations, and then in the upper right corner click on the three dots.
-- Select *Custom Repositories* and in the bottom add `https://github.com/briis/weatherflow_forecast` to the *Repository* field and under *Category* select *Integration*.
-- Close the dialog box, and you should now see the WeatherFlow Forecast integration show up in HACS as a new integration.
-- Click on it and select the DOWNLOAD button in the lower right corner.
-
-After the installation of the files, you must restart Home Assistant, or else you will not be able to add WeatherFlow Weather from the Integration Page.
-
-If you are not familiar with HACS, or haven't installed it, I would recommend to [look through the HACS documentation](https://hacs.xyz/), before continuing. Even though you can install the Integration manually, I would recommend using HACS, as you would always be reminded when a new release is published.
-
-## Manual Installation
-
-1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
-1. If you do not have a `custom_components` directory (folder) there, you need to create it.
-1. In the `custom_components` directory (folder) create a new folder called `weatherflow_forecast`.
-1. Download _all_ the files from the `custom_components/weatherflow_forecast/` directory (folder) in this repository.
-1. Place the files you downloaded in the new directory (folder) you created.
-1. Restart Home Assistant
-1. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "WeatherFlow Forecast"
-
 
 ## Configuration
 

@@ -9,6 +9,7 @@ on:
       - "**/README.md"
       - "**/info.md"
       - "**/CHANGELOG.md"
+      - "**/CONTRIBUTING.md"
     branches:
       - "main"
   pull_request:
