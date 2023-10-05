@@ -26,7 +26,9 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
+    DEFAULT_ADD_SENSOR,
     DOMAIN,
+    CONF_ADD_SENSORS,
     CONF_API_TOKEN,
     CONF_STATION_ID,
 )
