@@ -24,7 +24,8 @@
         "step": {
             "init": {
                 "data": {
-                    "api_token": "Personal Api Token"
+                    "api_token": "Personal Api Token",
+                    "add_sensors": "Add sensors from the Weather Station"
                 }
             }
         }
