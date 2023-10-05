@@ -15,7 +15,8 @@
                 "title": "WeatherFlow Forecast",
                 "data": {
                     "station_id": "Station Id",
-                    "api_token": "Personal Api Token"
+                    "api_token": "Personal Api Token",
+                    "add_sensors": "Add sensors from the Weather Station"
                 }
             }
         }
