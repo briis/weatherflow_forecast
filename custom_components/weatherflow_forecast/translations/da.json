@@ -35,22 +35,22 @@
         "sensor": {
             "wind_cardinal": {
                 "state": {
-                    "N": "N",
-                    "NNE": "NNØ",
-                    "NE": "NØ",
-                    "ENE": "ØNØ",
-                    "E": "Ø",
-                    "ESE": "ØSØ",
-                    "SE": "SØ",
-                    "SSE": "SSØ",
-                    "S": "S",
-                    "SSW": "SSV",
-                    "SW": "SV",
-                    "WSW": "VSV",
-                    "W": "V",
-                    "WNW": "VNV",
-                    "NW": "NV",
-                    "NNW": "NNV"
+                    "n": "N",
+                    "nne": "NNØ",
+                    "ne": "NØ",
+                    "ene": "ØNØ",
+                    "e": "Ø",
+                    "ese": "ØSØ",
+                    "se": "SØ",
+                    "sse": "SSØ",
+                    "s": "S",
+                    "ssw": "SSV",
+                    "sw": "SV",
+                    "wsw": "VSV",
+                    "w": "V",
+                    "wnw": "VNV",
+                    "nw": "NV",
+                    "nnw": "NNV"
                 }
             },
             "pressure_trend": {
