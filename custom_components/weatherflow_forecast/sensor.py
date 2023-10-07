@@ -18,6 +18,7 @@ from homeassistant.const import (
     CONF_NAME,
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
     LIGHT_LUX,
+    UnitOfLength,
     UnitOfPressure,
     UnitOfSpeed,
     UnitOfTemperature,
@@ -30,6 +31,7 @@ from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
 )
+from homeassistant.util.dt import utc_from_timestamp
 
 from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
@@ -103,6 +105,36 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="lightning_strike_count",
+        name="Lightnings Strikes",
+        icon="mdi:lightning-bolt",
+        state_class=SensorStateClass.TOTAL,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="lightning_strike_count_last_1hr",
+        name="Lightning Strikes last hour",
+        icon="mdi:lightning-bolt",
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="lightning_strike_count_last_3hr",
+        name="Lightning Strikes last 3 hours",
+        icon="mdi:lightning-bolt",
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="lightning_strike_last_distance",
+        name="Distance last lightning strike",
+        native_unit_of_measurement=UnitOfLength.KILOMETERS,
+        device_class=SensorDeviceClass.DISTANCE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="lightning_strike_last_epoch",
+        name="Time of last lightning strike",
+        device_class=SensorDeviceClass.TIMESTAMP,
     ),
     WeatherFlowSensorEntityDescription(
         key="wind_gust",
