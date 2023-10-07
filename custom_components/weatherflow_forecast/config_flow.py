@@ -79,6 +79,8 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_NAME: station_data.station_name,
                 CONF_STATION_ID: user_input[CONF_STATION_ID],
                 CONF_API_TOKEN: user_input[CONF_API_TOKEN],
+            },
+            options={
                 CONF_ADD_SENSORS: user_input[CONF_ADD_SENSORS],
             }
         )
@@ -91,7 +93,7 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required(CONF_STATION_ID): int,
                     vol.Required(CONF_API_TOKEN): str,
-                    vol.Required(CONF_ADD_SENSORS, default=DEFAULT_ADD_SENSOR): bool,
+                    vol.Optional(CONF_ADD_SENSORS, default=DEFAULT_ADD_SENSOR): bool,
                 }
             ),
             errors=errors or {},
@@ -115,7 +117,7 @@ class WeatherFlowForecastOptionsFlowHandler(config_entries.OptionsFlow):
             data_schema=vol.Schema(
                 {
                     vol.Required(CONF_API_TOKEN, default=self._config_entry.data.get(CONF_API_TOKEN, "")): str,
-                    vol.Required(CONF_ADD_SENSORS, default=self._config_entry.data.get(CONF_ADD_SENSORS, DEFAULT_ADD_SENSOR)): bool,
+                    vol.Optional(CONF_ADD_SENSORS, default=self._config_entry.options.get(CONF_ADD_SENSORS, DEFAULT_ADD_SENSOR)): bool,
                 }
             )
         )

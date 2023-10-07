@@ -38,9 +38,10 @@ from homeassistant.util.dt import utc_from_timestamp
 
 from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
-    DOMAIN,
+    ATTR_ATTRIBUTION,
     CONF_STATION_ID,
     CONFIG_URL,
+    DOMAIN,
     MANUFACTURER,
     MODEL
 )
@@ -123,6 +124,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, asyn
     """Setup WeatherFlow sensor platform."""
     coordinator: WeatherFlowForecastDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
+    if coordinator.data.sensor_data == {}:
+        return
+
     entities: list[WeatherFlowSensor[Any]] = [
         WeatherFlowSensor(coordinator, description, config_entry)
         for description in SENSOR_TYPES
@@ -143,6 +147,8 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
         """Initialize a WeatherFlow sensor."""
         super().__init__(coordinator)
         self.entity_description = description
+
+        self._attr_attribution = ATTR_ATTRIBUTION
         self._attr_name = f"{config.data[CONF_NAME]} {description.name}"
         self._attr_unique_id = f"{config.data[CONF_STATION_ID]} {description.key}"
 

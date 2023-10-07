@@ -23,6 +23,7 @@ from pyweatherflow_forecast import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.exceptions import HomeAssistantError, ConfigEntryNotReady, Unauthorized
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -35,18 +36,22 @@ from .const import (
     CONF_STATION_ID,
 )
 
+PLATFORMS = [Platform.WEATHER, Platform.SENSOR]
+
 _LOGGER = logging.getLogger(__name__)
+
+def _get_platforms(config_entry: ConfigEntry):
+
+    add_sensors = DEFAULT_ADD_SENSOR if config_entry.options.get(
+        CONF_ADD_SENSORS) is None else config_entry.options.get(CONF_ADD_SENSORS)
+
+    return add_sensors
+
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Set up WeatherFlow Forecast as config entry."""
 
-    add_sensors = DEFAULT_ADD_SENSOR if config_entry.data.get(
-        CONF_ADD_SENSORS) is None else config_entry.data.get(CONF_ADD_SENSORS)
-
-    if add_sensors:
-        platforms = [Platform.WEATHER, Platform.SENSOR]
-    else:
-        platforms = [Platform.WEATHER]
+    add_sensors = _get_platforms(config_entry)
 
     coordinator = WeatherFlowForecastDataUpdateCoordinator(hass, config_entry, add_sensors)
     await coordinator.async_config_entry_first_refresh()
@@ -56,14 +61,15 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
 
     config_entry.async_on_unload(config_entry.add_update_listener(async_update_entry))
 
-    await hass.config_entries.async_forward_entry_setups(config_entry, platforms)
+    await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
 
     return True
 
-async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry, platforms) -> bool:
+async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Unload a config entry."""
+
     unload_ok = await hass.config_entries.async_unload_platforms(
-        config_entry, platforms
+        config_entry, PLATFORMS
     )
 
     hass.data[DOMAIN].pop(config_entry.entry_id)
@@ -85,6 +91,8 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlo
         """Initialize global WeatherFlow forecast data updater."""
         self.weather = WeatherFlowForecastWeatherData(hass, config_entry.data, add_sensors)
         self.weather.initialize_data()
+        self.hass = hass
+        self.config_entry = config_entry
 
         if add_sensors:
             update_interval = timedelta(minutes=randrange(1, 2))
@@ -99,6 +107,14 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlo
             return await self.weather.fetch_data()
         except Exception as err:
             raise UpdateFailed(f"Update failed: {err}") from err
+
+    async def async_will_remove_from_hass(self) -> None:
+        """Handle removal of an entry."""
+
+        _LOGGER.debug("REMOVE Called")
+        add_sensors = _get_platforms(self.config_entry)
+        if not add_sensors:
+            await self.hass.config_entries.async_remove(self.config_entry, Platform.SENSOR)
 
 
 class WeatherFlowForecastWeatherData:

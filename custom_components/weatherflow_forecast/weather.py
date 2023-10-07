@@ -27,6 +27,7 @@ from homeassistant.util.dt import utc_from_timestamp
 
 from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
+    ATTR_ATTRIBUTION,
     CONF_STATION_ID,
     CONFIG_URL,
     DEFAULT_NAME,
@@ -78,7 +79,7 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
     """Implementation of a WeatherFlow weather condition."""
 
     _attr_attribution = (
-        "Weather Forecast from Better Forecast delivered by WeatherFlow"
+        ATTR_ATTRIBUTION
     )
     _attr_has_entity_name = True
     _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
