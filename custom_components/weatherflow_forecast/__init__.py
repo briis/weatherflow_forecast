@@ -6,7 +6,6 @@ import logging
 from random import randrange
 from types import MappingProxyType
 from typing import Any, Self
-import json
 
 from pyweatherflow_forecast import (
     WeatherFlow,
@@ -23,7 +22,6 @@ from pyweatherflow_forecast import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.exceptions import HomeAssistantError, ConfigEntryNotReady, Unauthorized
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed

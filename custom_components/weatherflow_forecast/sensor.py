@@ -4,10 +4,8 @@ from __future__ import annotations
 import logging
 
 from dataclasses import dataclass
-from datetime import date, datetime
-from decimal import Decimal
 from types import MappingProxyType
-from typing import Any, TypeVar
+from typing import Any
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -20,7 +18,6 @@ from homeassistant.const import (
     CONF_NAME,
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
     LIGHT_LUX,
-    UnitOfPrecipitationDepth,
     UnitOfPressure,
     UnitOfSpeed,
     UnitOfTemperature,
@@ -33,8 +30,6 @@ from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
 )
-from homeassistant.util.unit_system import METRIC_SYSTEM
-from homeassistant.util.dt import utc_from_timestamp
 
 from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
@@ -121,7 +116,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback) -> None:
-    """Setup WeatherFlow sensor platform."""
+    """WeatherFlow sensor platform."""
     coordinator: WeatherFlowForecastDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     if coordinator.data.sensor_data == {}:
