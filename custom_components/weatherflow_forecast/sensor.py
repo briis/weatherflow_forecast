@@ -44,7 +44,6 @@ from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
     ATTR_ATTRIBUTION,
     CONF_STATION_ID,
-    CONFIG_URL,
     DOMAIN,
     MANUFACTURER,
     MODEL
@@ -307,32 +306,28 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
     """A WeatherFlow sensor."""
 
     entity_description: WeatherFlowSensorEntityDescription
+    _attr_has_entity_name = True
 
-    def __init__(self,
-                 coordinator: WeatherFlowForecastDataUpdateCoordinator,
-                 description: WeatherFlowSensorEntityDescription,
-                 config: MappingProxyType[str, Any]
-                 ) -> None:
+    def __init__(
+        self,
+        coordinator: WeatherFlowForecastDataUpdateCoordinator,
+        description: WeatherFlowSensorEntityDescription,
+        config: MappingProxyType[str, Any]
+    ) -> None:
         """Initialize a WeatherFlow sensor."""
         super().__init__(coordinator)
         self.entity_description = description
+        self._config = config
 
-        self._attr_attribution = ATTR_ATTRIBUTION
-        self._attr_name = f"{config.data[CONF_NAME]} {description.name}"
-        self._attr_unique_id = f"{config.data[CONF_STATION_ID]} {description.key}"
-
-    @property
-    def device_info(self) -> DeviceInfo:
-        """Return device information."""
-        assert self.platform.config_entry and self.platform.config_entry.unique_id
-        return DeviceInfo(
-            entry_type=DeviceEntryType.SERVICE,
-            identifiers={(DOMAIN, self.platform.config_entry.unique_id)},
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, self._config.data[CONF_STATION_ID])},
             manufacturer=MANUFACTURER,
             model=MODEL,
-            name="Sensors",
-            configuration_url=CONFIG_URL,
+            name=f"{self._config.data[CONF_NAME]} Sensors",
+            configuration_url=f"https://tempestwx.com/station/{self._config.data[CONF_STATION_ID]}/grid",
         )
+        self._attr_attribution = ATTR_ATTRIBUTION
+        self._attr_unique_id = f"{config.data[CONF_STATION_ID]} {description.key}"
 
     @property
     def native_value(self) -> StateType:

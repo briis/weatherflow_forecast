@@ -93,7 +93,7 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlo
         self.config_entry = config_entry
 
         if add_sensors:
-            update_interval = timedelta(minutes=randrange(1, 2))
+            update_interval = timedelta(minutes=randrange(1, 5))
         else:
             update_interval = timedelta(minutes=randrange(25, 35))
 

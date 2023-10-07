@@ -1,6 +1,8 @@
 """Support for WeatherFlow Forecast weather service."""
 from __future__ import annotations
 
+import logging
+
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any
 
@@ -29,12 +31,13 @@ from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
     ATTR_ATTRIBUTION,
     CONF_STATION_ID,
-    CONFIG_URL,
     DEFAULT_NAME,
     DOMAIN,
     MANUFACTURER,
     MODEL
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
         hass: HomeAssistant,
@@ -100,20 +103,21 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
     ) -> None:
         """Initialise the platform with a data instance and station."""
         super().__init__(coordinator)
+
         self._attr_unique_id = _calculate_unique_id(config, hourly)
+        self._attr_name = name
+
         self._config = config
         self._is_metric = is_metric
         self._hourly = hourly
         self._attr_entity_registry_enabled_default = not hourly
         self._attr_device_info = DeviceInfo(
             name="Forecast",
-            entry_type=DeviceEntryType.SERVICE,
             identifiers={(DOMAIN,)},  # type: ignore[arg-type]
             manufacturer=MANUFACTURER,
             model=MODEL,
-            configuration_url=CONFIG_URL,
+            configuration_url=f"https://tempestwx.com/station/{self._config[CONF_STATION_ID]}/grid",
         )
-        self._attr_name = name
 
     @property
     def condition(self) -> str | None:
