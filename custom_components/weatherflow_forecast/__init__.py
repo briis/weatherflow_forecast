@@ -6,6 +6,7 @@ import logging
 from random import randrange
 from types import MappingProxyType
 from typing import Any, Self
+import json
 
 from pyweatherflow_forecast import (
     WeatherFlow,
@@ -39,8 +40,8 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Set up WeatherFlow Forecast as config entry."""
 
-    if (add_sensors := config_entry.data.get(CONF_ADD_SENSORS)) and add_sensors is None:
-        add_sensors = DEFAULT_ADD_SENSOR
+    add_sensors = DEFAULT_ADD_SENSOR if config_entry.data.get(
+        CONF_ADD_SENSORS) is None else config_entry.data.get(CONF_ADD_SENSORS)
 
     if add_sensors:
         platforms = [Platform.WEATHER, Platform.SENSOR]
@@ -86,7 +87,7 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlo
         self.weather.initialize_data()
 
         if add_sensors:
-            update_interval = timedelta(minutes=1)
+            update_interval = timedelta(minutes=randrange(1, 2))
         else:
             update_interval = timedelta(minutes=randrange(25, 35))
 
@@ -164,5 +165,6 @@ class WeatherFlowForecastWeatherData:
             if not resp:
                 raise CannotConnect()
             self.sensor_data = resp
+            # _LOGGER.debug(vars(self.sensor_data))
 
         return self

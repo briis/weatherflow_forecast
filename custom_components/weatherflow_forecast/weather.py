@@ -26,9 +26,14 @@ from homeassistant.util.unit_system import METRIC_SYSTEM
 from homeassistant.util.dt import utc_from_timestamp
 
 from . import WeatherFlowForecastDataUpdateCoordinator
-from .const import DOMAIN, CONF_STATION_ID
-
-DEFAULT_NAME = "WeatherFlow Forecast"
+from .const import (
+    CONF_STATION_ID,
+    CONFIG_URL,
+    DEFAULT_NAME,
+    DOMAIN,
+    MANUFACTURER,
+    MODEL
+)
 
 async def async_setup_entry(
         hass: HomeAssistant,
@@ -103,9 +108,9 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
             name="Forecast",
             entry_type=DeviceEntryType.SERVICE,
             identifiers={(DOMAIN,)},  # type: ignore[arg-type]
-            manufacturer="WeatherFlow",
-            model="Forecast",
-            configuration_url="https://weatherflow.github.io/Tempest/api/",
+            manufacturer=MANUFACTURER,
+            model=MODEL,
+            configuration_url=CONFIG_URL,
         )
         self._attr_name = name
 
