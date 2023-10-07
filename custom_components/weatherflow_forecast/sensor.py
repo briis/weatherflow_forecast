@@ -17,11 +17,18 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_NAME,
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+    DEGREE,
     LIGHT_LUX,
+    PERCENTAGE,
+    UnitOfIrradiance,
     UnitOfLength,
+    UnitOfPrecipitationDepth,
     UnitOfPressure,
     UnitOfSpeed,
     UnitOfTemperature,
+    UnitOfTime,
+    UnitOfVolumetricFlux,
+    UV_INDEX,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
@@ -55,6 +62,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.VOLATILE_ORGANIC_COMPOUNDS,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
         key="air_temperature",
@@ -137,8 +145,142 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.TIMESTAMP,
     ),
     WeatherFlowSensorEntityDescription(
+        key="precip",
+        name="Precipitation Rate",
+        native_unit_of_measurement=UnitOfVolumetricFlux.MILLIMETERS_PER_HOUR,
+        device_class=SensorDeviceClass.PRECIPITATION_INTENSITY,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="precip_accum_last_1hr",
+        name="Precipitation last hour",
+        native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
+        device_class=SensorDeviceClass.PRECIPITATION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="precip_accum_local_day",
+        name="Precipitation today",
+        native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
+        device_class=SensorDeviceClass.PRECIPITATION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="precip_accum_local_yesterday",
+        name="Precipitation yesterday",
+        native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
+        device_class=SensorDeviceClass.PRECIPITATION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="precip_minutes_local_day",
+        name="Precipitation minutes today",
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="precip_minutes_local_yesterday",
+        name="Precipitation minutes yesterday",
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="pressure_trend",
+        name="Pressure Trend",
+        translation_key="pressure_trend",
+        icon="mdi:trending-up",
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="relative_humidity",
+        name="Humidity",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.HUMIDITY,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="sea_level_pressure",
+        name="Sea Level Pressure",
+        native_unit_of_measurement=UnitOfPressure.HPA,
+        device_class=SensorDeviceClass.ATMOSPHERIC_PRESSURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="solar_radiation",
+        name="Solar Radiation",
+        native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
+        device_class=SensorDeviceClass.IRRADIANCE,
+        state_class=SensorStateClass.MEASUREMENT
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="station_pressure",
+        name="Station Pressure",
+        native_unit_of_measurement=UnitOfPressure.HPA,
+        device_class=SensorDeviceClass.ATMOSPHERIC_PRESSURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="uv",
+        name="UV Index",
+        native_unit_of_measurement=UV_INDEX,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:sun-wireless",
+        suggested_display_precision=1,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="wet_bulb_globe_temperature",
+        name="Wet Bulb Globe Teamperature",
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="wet_bulb_temperature",
+        name="Wet Bulb Teamperature",
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="wind_avg",
+        name="Wind Speed",
+        native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
+        device_class=SensorDeviceClass.WIND_SPEED,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="wind_cardinal",
+        name="Wind Cardinal",
+        icon="mdi:compass",
+        translation_key="wind_cardinal",
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="wind_chill",
+        name="Wind Chill",
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="wind_direction",
+        name="Wind Direction",
+        native_unit_of_measurement=DEGREE,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:compass",
+    ),
+    WeatherFlowSensorEntityDescription(
         key="wind_gust",
         name="Wind Gust",
+        native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
+        device_class=SensorDeviceClass.WIND_SPEED,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="wind_lull",
+        name="Wind Lull",
         native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
@@ -196,7 +338,18 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
     def native_value(self) -> StateType:
         """Return state of the sensor."""
 
+        if self.entity_description.key == "lightning_strike_last_epoch":
+            raw_data = getattr(self.coordinator.data.sensor_data,
+                               self.entity_description.key) if self.coordinator.data.sensor_data else None
+            return utc_from_timestamp(raw_data) if raw_data else None
+
         return (
             getattr(self.coordinator.data.sensor_data, self.entity_description.key)
             if self.coordinator.data.sensor_data else None
+        )
+
+    async def async_added_to_hass(self):
+        """When entity is added to hass."""
+        self.async_on_remove(
+            self.coordinator.async_add_listener(self.async_write_ha_state)
         )

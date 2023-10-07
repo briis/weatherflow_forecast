@@ -106,14 +106,6 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlo
         except Exception as err:
             raise UpdateFailed(f"Update failed: {err}") from err
 
-    async def async_will_remove_from_hass(self) -> None:
-        """Handle removal of an entry."""
-
-        _LOGGER.debug("REMOVE Called")
-        add_sensors = _get_platforms(self.config_entry)
-        if not add_sensors:
-            await self.hass.config_entries.async_remove(self.config_entry, Platform.SENSOR)
-
 
 class WeatherFlowForecastWeatherData:
     """Keep data for WeatherFlow Forecast entity data."""
