@@ -12,7 +12,7 @@ Date: `2023-10-08`
 
 ### TODO
 - Add the remaining Calculated sensors that are currently available in the 'old' integration (Some have already been included.)
-- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually remnoved.
+- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
 - Migrate parts of the language files from the 'old' integration. I will still need people to do some translations.
 - If Station ID and API Token do not match, a wrong error message is displayed.
 - Add the Integration to the Default HACS store.

@@ -1,4 +1,4 @@
-# WeatherFlow Better Forecast integration for Home Assistant
+# WeatherFlow Forecast and Sensor integration for Home Assistant
 Home Assistant integration for WeatherFlow Forecast
 
 [![GitHub Release][releases-shield]][releases]
