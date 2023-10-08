@@ -15,3 +15,4 @@ Date: `NOT RELEASED`
 - Migrate parts of the language files from the 'old' integration. I will still need people to do some translations.
 - If Station ID and API Token do not match, a wrong error message is displayed.
 - Add the Integration to the Default HACS store.
+- Add sensor description to the README file

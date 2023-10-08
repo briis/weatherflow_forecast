@@ -38,6 +38,7 @@ To add WeatherFlow Forecast to your installation, do the following:
   | --------- | -------- | ------------- | ----------- |
   | `Station ID` | Yes | None | The Station ID for your weathwer station. |
   | `API Token` | Yes | None | The personal API Token you created as per instructions above. |
+  | `Add Sensors` | No | False | Mark the box if you want to have all the available sensors from the Rest API add to Home Assistant |
 
 - Click on SUBMIT to save your data. If all goes well you should now have a new Weather entity with data from WeatherFlow Forecast
 
