@@ -1,6 +1,6 @@
 ## Release 0.2.0
 
-Date: `NOT RELEASED`
+Date: `2023-10-08`
 
 ### Changes
 
