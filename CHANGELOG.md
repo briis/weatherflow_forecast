@@ -6,7 +6,7 @@ Date: `NOT RELEASED`
 
 - Added option to add all the sensors to the Integration. If upgrading select configure button, to add the sensors.
 - If sensors are enabled, the Weather Entity will use sensor data as the Current Data, to get a more realtime view.
-- Integration images are added to Home Assistant Brand icons - It is he same images as the `core` integration uses, as this is the official WeatherFlow images.
+- Integration images are added to Home Assistant Brand icons - It is the same images as the `core` integration uses, as these are the official WeatherFlow images.
 
 
 ### TODO
