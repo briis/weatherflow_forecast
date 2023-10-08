@@ -131,36 +131,50 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
     @property
     def native_temperature(self) -> float | None:
         """Return the temperature."""
+        if self.coordinator.add_sensors:
+            return self.coordinator.data.sensor_data.air_temperature
         return self.coordinator.data.current_weather_data.temperature
 
     @property
     def native_pressure(self) -> float | None:
         """Return the pressure."""
+        if self.coordinator.add_sensors:
+            return self.coordinator.data.sensor_data.sea_level_pressure
         return self.coordinator.data.current_weather_data.pressure
 
     @property
     def humidity(self) -> float | None:
         """Return the humidity."""
+        if self.coordinator.add_sensors:
+            return self.coordinator.data.sensor_data.relative_humidity
         return self.coordinator.data.current_weather_data.humidity
 
     @property
     def native_wind_speed(self) -> float | None:
         """Return the wind speed."""
+        if self.coordinator.add_sensors:
+            return self.coordinator.data.sensor_data.wind_avg
         return self.coordinator.data.current_weather_data.wind_speed
 
     @property
     def wind_bearing(self) -> float | str | None:
         """Return the wind direction."""
+        if self.coordinator.add_sensors:
+            return self.coordinator.data.sensor_data.wind_direction
         return self.coordinator.data.current_weather_data.wind_bearing
 
     @property
     def native_wind_gust_speed(self) -> float | None:
         """Return the wind gust speed in native units."""
+        if self.coordinator.add_sensors:
+            return self.coordinator.data.sensor_data.wind_gust
         return self.coordinator.data.current_weather_data.wind_gust_speed
 
     @property
     def native_dew_point(self) -> float | None:
         """Return the dew point."""
+        if self.coordinator.add_sensors:
+            return self.coordinator.data.sensor_data.dew_point
         return self.coordinator.data.current_weather_data.dew_point
 
     def _forecast(self, hourly: bool) -> list[Forecast] | None:

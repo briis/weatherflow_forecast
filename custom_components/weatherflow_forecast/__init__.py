@@ -91,6 +91,7 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlo
         self.weather.initialize_data()
         self.hass = hass
         self.config_entry = config_entry
+        self.add_sensors = add_sensors
 
         if add_sensors:
             update_interval = timedelta(minutes=randrange(1, 5))
