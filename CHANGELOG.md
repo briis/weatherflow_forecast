@@ -1,3 +1,12 @@
+## Release 0.2.2
+
+Date: `NOT RELEASED`
+
+### Changes
+
+- Removed sensor `precip` as this is only used for calculating precipitation rate
+
+
 ## Release 0.2.1
 
 Date: `2023-10-08`

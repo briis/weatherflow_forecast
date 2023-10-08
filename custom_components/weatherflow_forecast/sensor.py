@@ -163,13 +163,6 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.TIMESTAMP,
     ),
     WeatherFlowSensorEntityDescription(
-        key="precip",
-        name="Precipitation",
-        native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
-        device_class=SensorDeviceClass.PRECIPITATION,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    WeatherFlowSensorEntityDescription(
         key="precip_rate",
         name="Precipitation Rate",
         native_unit_of_measurement=UnitOfVolumetricFlux.MILLIMETERS_PER_HOUR,
