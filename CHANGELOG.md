@@ -1,3 +1,13 @@
+## Release 0.2.1
+
+Date: `2023-10-08`
+
+### Changes
+
+- Added `visibility` sensor
+- Added `cloud_base` sensor
+- Added `precip_rate` sensor
+
 ## Release 0.2.0
 
 Date: `2023-10-08`
