@@ -67,6 +67,67 @@ To add WeatherFlow Forecast to your installation, do the following:
 
 You can configure more than 1 instance of the Integration by using a different Station ID.
 
+## Available Sensors
+
+Here is the list of sensors that the program generates. Calculated means, if No, then data comes directly from the Weather Station, if yes, it is a sensor that is derived from some of the other sensors. Not all sensors show up on all installations. It depends on where in the world your station is located.
+
+All entities are prefixed with `[STATION NAME]_sensors_`
+
+| Sensor Name | Description | Calculated |
+| --- | --- | --- |
+| Absolute Humidity | The amount of water per volume of air | Yes |
+| Air Density | The Air density | No |
+| Apparent Temperature | The apparent temperature, a mix of Heat Index and Wind Chill | No |
+| Temperature | Outside Temperature | No |
+| Barometric Pressure | The Barometric pressure | No |
+| Cloud Base| The cloud height altitude above sea level | Yes |
+| Data Updated | The time of the last data update. Disabled by default.  | No |
+| Delta T | Difference between Air Temperature and Wet Bulb Temperature | No |
+| Dew Point | Dewpoint in degrees | No |
+| Distance last lightning strike | Distance of the last strike | No |
+| Heat Index | How warm does it feel? | No |
+| Humidity | Relative Humidity in % | No |
+| Illuminance | How much the incident light illuminates the surface | No |
+| Lightning Strikes | Number of lightning strikes in the last minute | No |
+| Lightning Strikes last hour | Number of lightning strikes during the last hour | No |
+| Lightning Strikes last 3 hours | Number of lightning strikes the last 3 hours | No |
+| Precipitation duration today | Total rain minutes for the current day. (Reset at midnight) | No |
+| Precipitation duration today Checked | Total rain minutes for the current day. (Reset at midnight). Only if Rain Check enabled and in the US | No |
+| Precipitation duration yesterday | Total rain minutes yesterday | No |
+| Precipitation duration yesterday Checked | Total rain minutes yesterday. Only if Rain Check enabled and in the US | Total rain minutes yesterday | No |
+| Precipitation last hour | Total rain accumulation for the last hour | No |
+| Precipitation Rate | How much is it raining right now | Yes |
+| Precipitation today | Total rain for the current day. (Reset at midnight) | No |
+| Precipitation today Checked | Total rain for the current day. (Reset at midnight) Only if Rain Check enabled and in the US | No |
+| Precipitation yesterday | Total rain for yesterday (Reset at midnight) | No |
+| Precipitation yesterday Checked | Total rain for yesterday (Reset at midnight) Only if Rain Check enabled and in the US | No |
+| Pressure Trend | Returns Steady, Falling or Rising determined by the rate of change over the past 3 hours| No |
+| Sea Level Pressure | Preasure measurement at Sea Level | No |
+| Solar Radiation | Electromagnetic radiation emitted by the sun | No |
+| Station Pressure | Pressure measurement where the station is located | No |
+| Time of last lightning strike | When the last lightning strike occurred | No |
+| UV Index | The UV index | No |
+| Visibility | Distance to the horizon | Yes |
+| Wet Bulb Globe Temperature | (WBGT) is a specialised heat stress index which considers several environmental and personal factors. | No |
+| Wet Bulb Temperature | Temperature of a parcel of air cooled to saturation (100% relative humidity) | No |
+| Wind Cardinal | Current measured Wind bearing as text | Yes |
+| Wind Chill | How cold does it feel? | No |
+| Wind Direction | Current measured Wind bearing in degrees | No |
+| Wind Gust | Highest wind speed for the last minute | No |
+| Wind Lull | Lowest wind for the last minute | No |
+| Wind Speed | Average wind speed for the last minute | No |
+
+## Enable Debug Logging
+
+If logs are needed for debugging or reporting an issue, use the following configuration.yaml:
+
+```yaml
+logger:
+  default: error
+  logs:
+    pyweatherflow-forecast: debug
+    custom_components.weatherflow_forecast: debug
+```
 
 ***
 

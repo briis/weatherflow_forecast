@@ -193,14 +193,14 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_minutes_local_day",
-        name="Precipitation minutes today",
+        name="Precipitation duration today",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_minutes_local_yesterday",
-        name="Precipitation minutes yesterday",
+        name="Precipitation duration yesterday",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.MEASUREMENT,
@@ -221,14 +221,14 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_minutes_local_day_final",
-        name="Precipitation minutes today Checked",
+        name="Precipitation duration today Checked",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_minutes_local_yesterday_final",
-        name="Precipitation minutes yesterday Checked",
+        name="Precipitation duration yesterday Checked",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.MEASUREMENT,
