@@ -43,6 +43,7 @@ from homeassistant.util.dt import utc_from_timestamp
 from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
     ATTR_ATTRIBUTION,
+    CONCENTRATION_GRAMS_PER_CUBIC_METER,
     CONF_STATION_ID,
     DOMAIN,
     MANUFACTURER,
@@ -55,6 +56,14 @@ class WeatherFlowSensorEntityDescription(SensorEntityDescription):
 
 
 SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
+    WeatherFlowSensorEntityDescription(
+        key="absolute_humidity",
+        name="Absolute Humidity",
+        native_unit_of_measurement=CONCENTRATION_GRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
+        icon="mdi:water",
+    ),
     WeatherFlowSensorEntityDescription(
         key="air_density",
         name="Air Density",
@@ -186,6 +195,34 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WeatherFlowSensorEntityDescription(
+        key="precip_accum_local_day_final",
+        name="Precipitation today Checked",
+        native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
+        device_class=SensorDeviceClass.PRECIPITATION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="precip_accum_local_yesterday_final",
+        name="Precipitation yesterday Checked",
+        native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
+        device_class=SensorDeviceClass.PRECIPITATION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="precip_minutes_local_day_final",
+        name="Precipitation minutes today Checked",
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="precip_minutes_local_yesterday_final",
+        name="Precipitation minutes yesterday Checked",
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
         key="pressure_trend",
         name="Pressure Trend",
         translation_key="pressure_trend",
@@ -297,7 +334,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, asyn
 
     entities: list[WeatherFlowSensor[Any]] = [
         WeatherFlowSensor(coordinator, description, config_entry)
-        for description in SENSOR_TYPES
+        for description in SENSOR_TYPES if getattr(coordinator.data.sensor_data, description.key) is not None
     ]
 
     async_add_entities(entities, False)
