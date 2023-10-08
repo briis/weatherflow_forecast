@@ -13,3 +13,8 @@ DOMAIN = "weatherflow_forecast"
 
 MANUFACTURER = "WeatherFlow"
 MODEL = "Rest API"
+
+TIMESTAMP_SENSORS = [
+    "lightning_strike_last_epoch",
+    "timestamp",
+]

@@ -18,6 +18,7 @@ from homeassistant.const import (
     CONF_NAME,
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
     DEGREE,
+    EntityCategory,
     LIGHT_LUX,
     PERCENTAGE,
     UnitOfIrradiance,
@@ -47,7 +48,8 @@ from .const import (
     CONF_STATION_ID,
     DOMAIN,
     MANUFACTURER,
-    MODEL
+    MODEL,
+    TIMESTAMP_SENSORS,
 )
 
 @dataclass
@@ -267,6 +269,13 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
+        key="timestamp",
+        name="Data Updated",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    WeatherFlowSensorEntityDescription(
         key="wet_bulb_globe_temperature",
         name="Wet Bulb Globe Teamperature",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -371,7 +380,7 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
     def native_value(self) -> StateType:
         """Return state of the sensor."""
 
-        if self.entity_description.key == "lightning_strike_last_epoch":
+        if self.entity_description.key in TIMESTAMP_SENSORS:
             raw_data = getattr(self.coordinator.data.sensor_data,
                                self.entity_description.key) if self.coordinator.data.sensor_data else None
             return utc_from_timestamp(raw_data) if raw_data else None
