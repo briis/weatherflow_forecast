@@ -4,8 +4,11 @@ Date: `NOT RELEASED`
 
 ### Changes
 
-- Removed sensor `precip` as this is only used for calculating precipitation rate
+- **BREAKING** Removed sensor `precip` as this is only used for calculating precipitation rate - must be manually deleted.
 - Sensor description added to README.md
+- Fix issue [#6](https://github.com/briis/weatherflow_forecast/issues/6) wrong value in Absolute Humidity
+- Added Beaufort sensor
+- Added Freezing Altitude sensor
 
 ## Release 0.2.1
 
