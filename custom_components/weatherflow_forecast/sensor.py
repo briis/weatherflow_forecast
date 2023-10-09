@@ -107,6 +107,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfLength.METERS,
         device_class=SensorDeviceClass.DISTANCE,
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:arrow-expand-vertical",
         suggested_display_precision=0
     ),
     WeatherFlowSensorEntityDescription(
