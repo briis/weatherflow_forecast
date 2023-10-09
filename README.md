@@ -81,11 +81,13 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Apparent Temperature | The apparent temperature, a mix of Heat Index and Wind Chill | No |
 | Temperature | Outside Temperature | No |
 | Barometric Pressure | The Barometric pressure | No |
+| Beaufort | Beaufort scale is an empirical measure that relates wind speed to observed conditions at sea or on land | Yes |
 | Cloud Base| The cloud height altitude above sea level | Yes |
 | Data Updated | The time of the last data update. Disabled by default.  | No |
 | Delta T | Difference between Air Temperature and Wet Bulb Temperature | No |
 | Dew Point | Dewpoint in degrees | No |
 | Distance last lightning strike | Distance of the last strike | No |
+| Freezing Altitude| The altitude above sea level where snow is possible | Yes |
 | Heat Index | How warm does it feel? | No |
 | Humidity | Relative Humidity in % | No |
 | Illuminance | How much the incident light illuminates the surface | No |
