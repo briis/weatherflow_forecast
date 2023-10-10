@@ -1,3 +1,16 @@
+## Release 0.2.3
+
+Date: `NOT RELEASED`
+
+### Changes
+- Changed icon for Cloud Base
+
+### TODO
+- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
+- Migrate parts of the language files from the 'old' integration. I will still need people to do some translations.
+- If Station ID and API Token do not match, a wrong error message is displayed.
+- Add the Integration to the Default HACS store.
+
 ## Release 0.2.2
 
 Date: `2023-10-09`
@@ -31,10 +44,3 @@ Date: `2023-10-08`
 - Integration images are added to Home Assistant Brand icons - It is the same images as the `core` integration uses, as these are the official WeatherFlow images.
 - Updated the documentation
 
-
-### TODO
-- Add the remaining Calculated sensors that are currently available in the 'old' integration (Some have already been included.)
-- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
-- Migrate parts of the language files from the 'old' integration. I will still need people to do some translations.
-- If Station ID and API Token do not match, a wrong error message is displayed.
-- Add the Integration to the Default HACS store.
