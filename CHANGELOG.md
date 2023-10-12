@@ -4,12 +4,15 @@ Date: `NOT RELEASED`
 
 ### Changes
 - Changed icon for Cloud Base
+- Add the Integration to the Default HACS store. (Not merged on release of this version)
+- Bump pyweatherflow-forecast to 0.5.0
+- Added `Voltage` sensor. This sensor will only be available for Tempest devices. There will be no implementation for AIR and SKY as these are deprecated devices.
+- Added `Battery` sensor. This sensor is derived from the Voltage sensor above and shows the % full based on voltage amount.
 
 ### TODO
 - If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
 - Migrate parts of the language files from the 'old' integration. I will still need people to do some translations.
 - If Station ID and API Token do not match, a wrong error message is displayed.
-- Add the Integration to the Default HACS store.
 
 ## Release 0.2.2
 
