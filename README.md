@@ -79,8 +79,8 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Absolute Humidity | The amount of water per volume of air | Yes |
 | Air Density | The Air density | No |
 | Apparent Temperature | The apparent temperature, a mix of Heat Index and Wind Chill | No |
-| Temperature | Outside Temperature | No |
 | Barometric Pressure | The Barometric pressure | No |
+| Battery | The % of charge on the Battery (Tempest device only) | Yes |
 | Beaufort | Beaufort scale is an empirical measure that relates wind speed to observed conditions at sea or on land | Yes |
 | Cloud Base| The cloud height altitude above sea level | Yes |
 | Data Updated | The time of the last data update. Disabled by default.  | No |
@@ -108,8 +108,10 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Sea Level Pressure | Preasure measurement at Sea Level | No |
 | Solar Radiation | Electromagnetic radiation emitted by the sun | No |
 | Station Pressure | Pressure measurement where the station is located | No |
+| Temperature | Outside Temperature | No |
 | Time of last lightning strike | When the last lightning strike occurred | No |
 | UV Index | The UV index | No |
+| Votage | The Voltage of the Tempest device | No |
 | Visibility | Distance to the horizon | Yes |
 | Wet Bulb Globe Temperature | (WBGT) is a specialised heat stress index which considers several environmental and personal factors. | No |
 | Wet Bulb Temperature | Temperature of a parcel of air cooled to saturation (100% relative humidity) | No |
