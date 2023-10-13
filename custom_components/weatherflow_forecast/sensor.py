@@ -109,7 +109,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.DISTANCE,
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:arrow-expand-vertical",
-        suggested_display_precision=0
+        suggested_display_precision=0,
     ),
     WeatherFlowSensorEntityDescription(
         key="delta_t",
@@ -117,7 +117,6 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-
     ),
     WeatherFlowSensorEntityDescription(
         key="dew_point",
@@ -139,7 +138,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfLength.METERS,
         device_class=SensorDeviceClass.DISTANCE,
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=0
+        suggested_display_precision=0,
     ),
     WeatherFlowSensorEntityDescription(
         key="heat_index",
@@ -192,6 +191,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_accum_local_day",
@@ -199,6 +199,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_accum_local_yesterday",
@@ -206,6 +207,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_minutes_local_day",
@@ -227,6 +229,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_accum_local_yesterday_final",
@@ -234,6 +237,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_minutes_local_day_final",
@@ -241,6 +245,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfTime.MINUTES,
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_minutes_local_yesterday_final",
@@ -275,7 +280,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         name="Solar Radiation",
         native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
         device_class=SensorDeviceClass.IRRADIANCE,
-        state_class=SensorStateClass.MEASUREMENT
+        state_class=SensorStateClass.MEASUREMENT,
     ),
     WeatherFlowSensorEntityDescription(
         key="station_pressure",
@@ -306,7 +311,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfLength.KILOMETERS,
         device_class=SensorDeviceClass.DISTANCE,
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=0
+        suggested_display_precision=0,
     ),
     WeatherFlowSensorEntityDescription(
         key="wet_bulb_globe_temperature",
@@ -369,13 +374,15 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.BATTERY,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
     ),
     WeatherFlowSensorEntityDescription(
         key="voltage",
         name="Voltage",
         native_unit_of_measurement=UnitOfElectricPotential.VOLT,
-        device_class=SensorDeviceClass.POWER,
+        device_class=SensorDeviceClass.VOLTAGE,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=2,
     )
 )
 

@@ -9,6 +9,7 @@ from typing import Any, Self
 
 from pyweatherflow_forecast import (
     WeatherFlow,
+    WeatherFlowDeviceData,
     WeatherFlowForecastData,
     WeatherFlowForecastDaily,
     WeatherFlowForecastHourly,
@@ -17,6 +18,7 @@ from pyweatherflow_forecast import (
     WeatherFlowForecastInternalServerError,
     WeatherFlowForecastWongStationId,
     WeatherFlowSensorData,
+    WeatherFlowStationData,
 )
 
 from homeassistant.config_entries import ConfigEntry
@@ -31,6 +33,7 @@ from .const import (
     DOMAIN,
     CONF_ADD_SENSORS,
     CONF_API_TOKEN,
+    CONF_DEVICE_ID,
     CONF_STATION_ID,
 )
 
@@ -119,14 +122,18 @@ class WeatherFlowForecastWeatherData:
         self._weather_data: WeatherFlow
         self.current_weather_data: WeatherFlowForecastData = {}
         self.daily_forecast: WeatherFlowForecastDaily = []
+        self.device_id = None
         self.hourly_forecast: WeatherFlowForecastHourly = []
         self.sensor_data: WeatherFlowSensorData = {}
+        self.device_data: WeatherFlowDeviceData = {}
 
     def initialize_data(self) -> bool:
         """Establish connection to API."""
 
         self._weather_data = WeatherFlow(
             self._config[CONF_STATION_ID], self._config[CONF_API_TOKEN], elevation=self.hass.config.elevation, session=async_get_clientsession(self.hass))
+
+        self.device_id = self._config.get(CONF_DEVICE_ID, None)
 
         return True
 
@@ -156,7 +163,26 @@ class WeatherFlowForecastWeatherData:
 
         if self._add_sensors:
             try:
-                resp: WeatherFlowForecastData = await self._weather_data.async_get_sensors()
+                device_data: WeatherFlowDeviceData = await self._weather_data.async_get_device(self.device_id)
+            except WeatherFlowForecastWongStationId as unauthorized:
+                _LOGGER.debug(unauthorized)
+                raise Unauthorized from unauthorized
+            except WeatherFlowForecastBadRequest as err:
+                _LOGGER.debug(err)
+                return False
+            except WeatherFlowForecastUnauthorized as unauthorized:
+                _LOGGER.debug(unauthorized)
+                raise Unauthorized from unauthorized
+            except WeatherFlowForecastInternalServerError as notreadyerror:
+                _LOGGER.debug(notreadyerror)
+                raise ConfigEntryNotReady from notreadyerror
+
+            if not device_data:
+                raise CannotConnect()
+            self.device_data = device_data
+
+            try:
+                resp: WeatherFlowForecastData = await self._weather_data.async_get_sensors(self.device_data.voltage)
             except WeatherFlowForecastWongStationId as unauthorized:
                 _LOGGER.debug(unauthorized)
                 raise Unauthorized from unauthorized

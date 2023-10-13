@@ -3,6 +3,9 @@
 Date: `NOT RELEASED`
 
 ### Changes
+- **BREAKING**
+  - Voltage and battery sensors are now added for Tempest devices. They will not appear until the Integration has been deleted and re-added, as necessary data is only read during config.
+  - Precipitation Minutes... sensors have been renamed. Please delete them manually
 - Changed icon for Cloud Base
 - Add the Integration to the Default HACS store. (Not merged on release of this version)
 - Bump pyweatherflow-forecast to 0.5.0
