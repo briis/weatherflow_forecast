@@ -29,6 +29,7 @@ from homeassistant.const import (
     UnitOfTemperature,
     UnitOfTime,
     UnitOfVolumetricFlux,
+    UnitOfElectricPotential,
     UV_INDEX,
 )
 from homeassistant.core import HomeAssistant
@@ -362,6 +363,20 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
     ),
+    WeatherFlowSensorEntityDescription(
+        key="battery",
+        name="Battery",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.BATTERY,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="voltage",
+        name="Voltage",
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+    )
 )
 
 _LOGGER = logging.getLogger(__name__)

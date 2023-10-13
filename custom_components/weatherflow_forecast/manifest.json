@@ -10,7 +10,7 @@
     "iot_class": "cloud_polling",
     "issue_tracker": "https://github.com/briis/weatherflow_forecast/issues",
     "requirements": [
-        "pyweatherflow-forecast==0.5.0"
+        "git+https://github.com/briis/pyweatherflow_forecast@main#pyweatherflow-forecast==0.5.1"
     ],
     "version": "0.2.3"
 }
