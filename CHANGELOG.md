@@ -1,6 +1,6 @@
 ## Release 0.3.0
 
-Date: `NOT RELEASED`
+Date: `2023-10-14`
 
 ### Changes
 - **BREAKING**
