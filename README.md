@@ -16,6 +16,9 @@ This integration adds support for retrieving the Forecast, Current condition and
 
 For this integration you **must own a WeatherFlow weather station** and you must create a personal API Token that work with your weather station. [See this link](https://weatherflow.github.io/Tempest/api/) for a description on how to retrieve the API Token.
 
+**Note**: All development is done using a *TEMPEST* device, so no testing of the code is done using the old AIR and SKY devices. It does not mean that it will not work with that setup, but some sensors will not be available and no testing is done.
+Please do not add ask me to implement special features for these device, as it will not happen. This is open source, so you are welcome to create your own fork and implement as desired.
+
 #### This integration will set up the following platforms.
 
 Platform | Description
@@ -111,7 +114,7 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Temperature | Outside Temperature | No |
 | Time of last lightning strike | When the last lightning strike occurred | No |
 | UV Index | The UV index | No |
-| Votage | The Voltage of the Tempest device | No |
+| Voltage | The Voltage of the Tempest device | No |
 | Visibility | Distance to the horizon | Yes |
 | Wet Bulb Globe Temperature | (WBGT) is a specialised heat stress index which considers several environmental and personal factors. | No |
 | Wet Bulb Temperature | Temperature of a parcel of air cooled to saturation (100% relative humidity) | No |
