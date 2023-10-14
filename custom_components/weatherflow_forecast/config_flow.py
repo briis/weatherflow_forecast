@@ -23,6 +23,8 @@ from .const import (
     CONF_ADD_SENSORS,
     CONF_API_TOKEN,
     CONF_DEVICE_ID,
+    CONF_FIRMWARE_REVISION,
+    CONF_SERIAL_NUMBER,
     CONF_STATION_ID,
 )
 
@@ -81,6 +83,8 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_STATION_ID: user_input[CONF_STATION_ID],
                 CONF_API_TOKEN: user_input[CONF_API_TOKEN],
                 CONF_DEVICE_ID: station_data.device_id,
+                CONF_FIRMWARE_REVISION: station_data.firmware_revision,
+                CONF_SERIAL_NUMBER: station_data.serial_number,
             },
             options={
                 CONF_ADD_SENSORS: user_input[CONF_ADD_SENSORS],

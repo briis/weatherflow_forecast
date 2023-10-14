@@ -46,6 +46,7 @@ from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
     ATTR_ATTRIBUTION,
     CONCENTRATION_GRAMS_PER_CUBIC_METER,
+    CONF_FIRMWARE_REVISION,
     CONF_STATION_ID,
     DOMAIN,
     MANUFACTURER,
@@ -88,6 +89,14 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfPressure.HPA,
         device_class=SensorDeviceClass.ATMOSPHERIC_PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="battery",
+        name="Battery",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.BATTERY,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
     ),
     WeatherFlowSensorEntityDescription(
         key="beaufort",
@@ -314,15 +323,23 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         suggested_display_precision=0,
     ),
     WeatherFlowSensorEntityDescription(
+        key="voltage",
+        name="Voltage",
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        device_class=SensorDeviceClass.VOLTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=2,
+    ),
+    WeatherFlowSensorEntityDescription(
         key="wet_bulb_globe_temperature",
-        name="Wet Bulb Globe Teamperature",
+        name="Wet Bulb Globe Temperature",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WeatherFlowSensorEntityDescription(
         key="wet_bulb_temperature",
-        name="Wet Bulb Teamperature",
+        name="Wet Bulb Temperature",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -368,22 +385,6 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
     ),
-    WeatherFlowSensorEntityDescription(
-        key="battery",
-        name="Battery",
-        native_unit_of_measurement=PERCENTAGE,
-        device_class=SensorDeviceClass.BATTERY,
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=0,
-    ),
-    WeatherFlowSensorEntityDescription(
-        key="voltage",
-        name="Voltage",
-        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
-        device_class=SensorDeviceClass.VOLTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=2,
-    )
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -426,6 +427,7 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
             model=MODEL,
             name=f"{self._config.data[CONF_NAME]} Sensors",
             configuration_url=f"https://tempestwx.com/station/{self._config.data[CONF_STATION_ID]}/grid",
+            hw_version=f"FW V{self._config.data.get(CONF_FIRMWARE_REVISION, ' - Not Available')}",
         )
         self._attr_attribution = ATTR_ATTRIBUTION
         self._attr_unique_id = f"{config.data[CONF_STATION_ID]} {description.key}"
