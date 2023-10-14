@@ -1,14 +1,15 @@
-## Release 0.2.3
+## Release 0.3.0
 
 Date: `NOT RELEASED`
 
 ### Changes
 - **BREAKING**
-  - Voltage and battery sensors are now added for Tempest devices. They will not appear until the Integration has been deleted and re-added, as necessary data is only read during config.
-  - Precipitation Minutes... sensors have been renamed. Please delete them manually
+  **Due to all the changes made in this release, I recommend that you remove the integration and re-add it. This will ensure all sensors are named correctly, and obsolete sensors are removed.**
+  - Precipitation Minutes... sensors have been renamed. Please delete them manually if you do not follow the recommendation above.
+  - Wet Bulb sensors have been renamed due to spelling error. You might need to delete the obsolete sensors manually.
 - Changed icon for Cloud Base
 - Add the Integration to the Default HACS store. (Not merged on release of this version)
-- Bump pyweatherflow-forecast to 0.5.0
+- Bump pyweatherflow-forecast to 0.6.0
 - Added `Voltage` sensor. This sensor will only be available for Tempest devices. There will be no implementation for AIR and SKY as these are deprecated devices.
 - Added `Battery` sensor. This sensor is derived from the Voltage sensor above and shows the % full based on voltage amount.
 
