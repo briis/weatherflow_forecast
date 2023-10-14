@@ -9,7 +9,6 @@ from typing import Any, Self
 
 from pyweatherflow_forecast import (
     WeatherFlow,
-    WeatherFlowDeviceData,
     WeatherFlowForecastData,
     WeatherFlowForecastDaily,
     WeatherFlowForecastHourly,
@@ -18,7 +17,6 @@ from pyweatherflow_forecast import (
     WeatherFlowForecastInternalServerError,
     WeatherFlowForecastWongStationId,
     WeatherFlowSensorData,
-    WeatherFlowStationData,
 )
 
 from homeassistant.config_entries import ConfigEntry
@@ -33,7 +31,6 @@ from .const import (
     DOMAIN,
     CONF_ADD_SENSORS,
     CONF_API_TOKEN,
-    CONF_DEVICE_ID,
     CONF_STATION_ID,
 )
 

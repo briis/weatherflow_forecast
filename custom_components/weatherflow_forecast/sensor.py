@@ -46,6 +46,7 @@ from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
     ATTR_ATTRIBUTION,
     CONCENTRATION_GRAMS_PER_CUBIC_METER,
+    CONF_FIRMWARE_REVISION,
     CONF_STATION_ID,
     DOMAIN,
     MANUFACTURER,
@@ -426,6 +427,7 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
             model=MODEL,
             name=f"{self._config.data[CONF_NAME]} Sensors",
             configuration_url=f"https://tempestwx.com/station/{self._config.data[CONF_STATION_ID]}/grid",
+            hw_version=f"FW V{self._config.data.get(CONF_FIRMWARE_REVISION, ' - Not Available')}",
         )
         self._attr_attribution = ATTR_ATTRIBUTION
         self._attr_unique_id = f"{config.data[CONF_STATION_ID]} {description.key}"
