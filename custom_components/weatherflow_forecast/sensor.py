@@ -90,6 +90,14 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WeatherFlowSensorEntityDescription(
+        key="battery",
+        name="Battery",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.BATTERY,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+    ),
+    WeatherFlowSensorEntityDescription(
         key="beaufort",
         name="Beaufort",
         icon="mdi:windsock",
@@ -314,6 +322,14 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         suggested_display_precision=0,
     ),
     WeatherFlowSensorEntityDescription(
+        key="voltage",
+        name="Voltage",
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        device_class=SensorDeviceClass.VOLTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=2,
+    ),
+    WeatherFlowSensorEntityDescription(
         key="wet_bulb_globe_temperature",
         name="Wet Bulb Globe Temperature",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -368,22 +384,6 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
     ),
-    WeatherFlowSensorEntityDescription(
-        key="battery",
-        name="Battery",
-        native_unit_of_measurement=PERCENTAGE,
-        device_class=SensorDeviceClass.BATTERY,
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=0,
-    ),
-    WeatherFlowSensorEntityDescription(
-        key="voltage",
-        name="Voltage",
-        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
-        device_class=SensorDeviceClass.VOLTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=2,
-    )
 )
 
 _LOGGER = logging.getLogger(__name__)
