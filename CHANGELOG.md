@@ -9,8 +9,6 @@ Date: `NOT RELEASED`
 
 ### TODO
 - If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
-- Migrate parts of the language files from the 'old' integration. I will still need people to do some translations.
-- If Station ID and API Token do not match, a wrong error message is displayed.
 
 ## Release 0.3.0
 
