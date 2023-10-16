@@ -5,6 +5,7 @@ Date: `NOT RELEASED`
 ### Changes
 
 - Bump pyweatherflow-forecast to 0.6.1, which optimizes the number of calls to the WeatherFlow Rest API, by removing 1 call per cycle
+- Bump pyweatherflow-forecast to 0.6.2, to ensure that AIR and SKY devices still can work with sensors, even without Voltage and Battery information.
 - Added language file for the following language codes: **cs, de, it, nl, sv**. Please note that not all translations are complete in these files, so anyone with the knowledge of the languages, please fork this repo, change the text strings, and make a Pull Request.
 
 ### TODO
