@@ -1,3 +1,16 @@
+## Release 0.3.1
+
+Date: `2023-10-15`
+
+### Changes
+
+- Bump pyweatherflow-forecast to 0.6.1, which optimizes the number of calls to the WeatherFlow Rest API, by removing 1 call per cycle
+- Bump pyweatherflow-forecast to 0.6.2, to ensure that AIR and SKY devices still can work with sensors, even without Voltage and Battery information.
+- Added language file for the following language codes: **cs, de, it, nl, sv**. Please note that not all translations are complete in these files, so anyone with the knowledge of the languages, please fork this repo, change the text strings, and make a Pull Request.
+
+### TODO
+- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
+
 ## Release 0.3.0
 
 Date: `2023-10-14`
@@ -12,11 +25,6 @@ Date: `2023-10-14`
 - Bump pyweatherflow-forecast to 0.6.0
 - Added `Voltage` sensor. This sensor will only be available for Tempest devices. There will be no implementation for AIR and SKY as these are deprecated devices.
 - Added `Battery` sensor. This sensor is derived from the Voltage sensor above and shows the % full based on voltage amount.
-
-### TODO
-- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
-- Migrate parts of the language files from the 'old' integration. I will still need people to do some translations.
-- If Station ID and API Token do not match, a wrong error message is displayed.
 
 ## Release 0.2.2
 
