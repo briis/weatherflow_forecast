@@ -1,3 +1,14 @@
+
+## Release 0.3.2
+
+Date: `2023-10-17`
+
+### Changes
+
+- Bump pyweatherflow-forecast to 0.6.3, with a fix that ensures none of the calculated sensors fail if the sensors used to do the calculations are None.
+- French translation is updated. Thank you @baylanger
+
+
 ## Release 0.3.1
 
 Date: `2023-10-15`
