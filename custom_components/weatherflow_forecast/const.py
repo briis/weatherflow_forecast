@@ -1,6 +1,14 @@
 """Constants for WeatherFlow Forecast component."""
 
 ATTR_ATTRIBUTION = "Weather data delivered by WeatherFlow"
+ATTR_DESCRIPTION = "description"
+
+BATTERY_MODE_DESCRIPTION = [
+    "All sensors enabled and operating at full performance. Wind sampling interval every 3 seconds",
+    "Wind sampling interval set to 6 seconds",
+    "Wind sampling interval set to one minute",
+    "Wind sampling interval set to 5 minutes. All other sensors sampling interval set to 5 minutes. Haptic Rain sensor disabled from active listening",
+]
 
 CONCENTRATION_GRAMS_PER_CUBIC_METER = "g/m³"
 CONF_ADD_SENSORS = "add_sensors"
