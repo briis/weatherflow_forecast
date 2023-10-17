@@ -8,6 +8,9 @@ Date: `2023-10-17`
 - Bump pyweatherflow-forecast to 0.6.3, with a fix that ensures none of the calculated sensors fail if the sensors used to do the calculations are None.
 - French translation is updated. Thank you @baylanger
 
+### TODO
+- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
+
 
 ## Release 0.3.1
 
@@ -18,9 +21,6 @@ Date: `2023-10-15`
 - Bump pyweatherflow-forecast to 0.6.1, which optimizes the number of calls to the WeatherFlow Rest API, by removing 1 call per cycle
 - Bump pyweatherflow-forecast to 0.6.2, to ensure that AIR and SKY devices still can work with sensors, even without Voltage and Battery information.
 - Added language file for the following language codes: **cs, de, it, nl, sv**. Please note that not all translations are complete in these files, so anyone with the knowledge of the languages, please fork this repo, change the text strings, and make a Pull Request.
-
-### TODO
-- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
 
 ## Release 0.3.0
 
