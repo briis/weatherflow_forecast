@@ -97,6 +97,7 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Lightning Strikes | Number of lightning strikes in the last minute | No |
 | Lightning Strikes last hour | Number of lightning strikes during the last hour | No |
 | Lightning Strikes last 3 hours | Number of lightning strikes the last 3 hours | No |
+| Power Save Mode | [Power Save Mode](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery) of a Tempest device | Yes |
 | Precipitation duration today | Total rain minutes for the current day. (Reset at midnight) | No |
 | Precipitation duration today Checked | Total rain minutes for the current day. (Reset at midnight). Only if Rain Check enabled and in the US | No |
 | Precipitation duration yesterday | Total rain minutes yesterday | No |
