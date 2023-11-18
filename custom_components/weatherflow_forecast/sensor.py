@@ -45,6 +45,8 @@ from homeassistant.util.dt import utc_from_timestamp
 from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
     ATTR_ATTRIBUTION,
+    ATTR_DESCRIPTION,
+    BATTERY_MODE_DESCRIPTION,
     CONCENTRATION_GRAMS_PER_CUBIC_METER,
     CONF_FIRMWARE_REVISION,
     CONF_STATION_ID,
@@ -185,6 +187,13 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         key="lightning_strike_last_epoch",
         name="Time of last lightning strike",
         device_class=SensorDeviceClass.TIMESTAMP,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="power_save_mode",
+        name="Power Save Mode",
+        icon="mdi:power-plug-battery",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=True,
     ),
     WeatherFlowSensorEntityDescription(
         key="precip_rate",
@@ -445,6 +454,18 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
             getattr(self.coordinator.data.sensor_data, self.entity_description.key)
             if self.coordinator.data.sensor_data else None
         )
+
+    @property
+    def extra_state_attributes(self) -> None:
+        """Return non standard attributes."""
+
+        if self.entity_description.key == "power_save_mode":
+            sensor_value = getattr(self.coordinator.data.sensor_data,
+                                   self.entity_description.key) if self.coordinator.data.sensor_data else None
+            if sensor_value is not None:
+                return {
+                    ATTR_DESCRIPTION: BATTERY_MODE_DESCRIPTION[sensor_value],
+                }
 
     async def async_added_to_hass(self):
         """When entity is added to hass."""

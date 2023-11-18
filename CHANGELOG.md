@@ -1,4 +1,17 @@
 
+## Release 0.3.3
+
+Date: `2023-11-18`
+
+### Changes
+
+- Added new sensor `Power Save Mode` that shows the Power Mode of a Tempest device. Attributes of the sensor gives a textual explanation. For more information [read here](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery)
+- Bump pyweatherflow-forecast to 0.6.4.
+
+### TODO
+- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
+
+
 ## Release 0.3.2
 
 Date: `2023-10-17`
@@ -7,9 +20,6 @@ Date: `2023-10-17`
 
 - Bump pyweatherflow-forecast to 0.6.3, with a fix that ensures none of the calculated sensors fail if the sensors used to do the calculations are None.
 - French translation is updated. Thank you @baylanger
-
-### TODO
-- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
 
 
 ## Release 0.3.1
