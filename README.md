@@ -95,6 +95,7 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Barometric Pressure | The Barometric pressure | No |
 | Battery | The % of charge on the Battery (Tempest device only) | Yes |
 | Beaufort | Beaufort scale is an empirical measure that relates wind speed to observed conditions at sea or on land | Yes |
+| Beaufort Description | A descriptive text of the Beaufort value | Yes |
 | Cloud Base| The cloud height altitude above sea level | Yes |
 | Data Updated | The time of the last data update. Disabled by default.  | No |
 | Delta T | Difference between Air Temperature and Wet Bulb Temperature | No |

@@ -9,6 +9,7 @@ This release is now V1.0, as all the relevant entities from the previous release
 
 - Bump pyweatherflow-forecast to 1.0.0
 - Added new sensor `Power Save Mode` that shows the Power Mode of a Tempest device. Attributes of the sensor gives a textual explanation. For more information [read here](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery) Closes (#27)
+- Added new sensor `Beaufort Description`, detailing the current Beaufort value with a descriptive text (For translated values please update the language file in the *translations* directory) Closes (#27)
 - Added new sensor `UV Description`, detailing the current UV value (For translated values please update the language file in the *translations* directory) Closes (#27)
 - Added new sensor `Staton Name`, detailing data about the Tempest Station (For translated values please update the language file in the *translations* directory) Closes (#27)
 - Added new Binary Sensor `Is Freezing`. On when the Celcius temperature is below 0. (Closes #26)
