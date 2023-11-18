@@ -3,12 +3,17 @@
 
 Date: `2023-11-18`
 
+This release is now V1.0, as all the relevant entities from the previous release are now implemented. Unfortunately my PR for getting this in to Default HACS is not merged yet, but I hope that this will happen soon, and when this does the previous integration will be removed.
+
 ### Changes
 
 - Bump pyweatherflow-forecast to 1.0.0
-- Added new sensor `Power Save Mode` that shows the Power Mode of a Tempest device. Attributes of the sensor gives a textual explanation. For more information [read here](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery)
-- Added new sensor `UV Description`, detailing the current UV value (For translated values please update the language file in the *translations* directory)
-- Added new sensor `Staton Information`, detailing data about the Tempest Station (For translated values please update the language file in the *translations* directory)
+- Added new sensor `Power Save Mode` that shows the Power Mode of a Tempest device. Attributes of the sensor gives a textual explanation. For more information [read here](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery) Closes (#27)
+- Added new sensor `UV Description`, detailing the current UV value (For translated values please update the language file in the *translations* directory) Closes (#27)
+- Added new sensor `Staton Information`, detailing data about the Tempest Station (For translated values please update the language file in the *translations* directory) Closes (#27)
+- Added new Binary Sensor `Is Freezing`. On when the Celcius temperature is below 0. (Closes #26)
+- Added new Binary Sensor `Is Lightning`. On when Lightning strike are detected. (Closes #26)
+- Added new Binary Sensor `Is Raining`. On when the rain rate is above 0mm. (Closes #26)
 
 ### TODO
 - If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
