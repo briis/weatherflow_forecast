@@ -5,8 +5,8 @@ Date: `2023-11-18`
 
 ### Changes
 
-- Added new sensor `Power Save Mode` that shows the Power Mode of a Tempest device. Attributes of the sensor gives a textual explanation. For more information [read here](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery)
 - Bump pyweatherflow-forecast to 1.0.0
+- Added new sensor `Power Save Mode` that shows the Power Mode of a Tempest device. Attributes of the sensor gives a textual explanation. For more information [read here](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery)
 - Added new sensor `UV Description`, detailing the current UV value (For translated values please update the language file in the *translations* directory)
 - Added new sensor `Staton Information`, detailing data about the Tempest Station (For translated values please update the language file in the *translations* directory)
 
