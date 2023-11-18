@@ -75,6 +75,16 @@ You can configure more than 1 instance of the Integration by using a different S
 
 Here is the list of sensors that the program generates. Calculated means, if No, then data comes directly from the Weather Station, if yes, it is a sensor that is derived from some of the other sensors. Not all sensors show up on all installations. It depends on where in the world your station is located.
 
+### Binary Sensors
+All entities are prefixed with `[STATION NAME]_binary_sensors_`
+
+| Sensor Name | Description | Calculated |
+| --- | --- | --- |
+| Is Freezing | On when the Celcius temperature is below 0 | Yes |
+| Is Lightning | On when Lightning strikes are detected | Yes |
+| Is Raining | On when the rain rate is above 0mm | Yes |
+
+### Sensors
 All entities are prefixed with `[STATION NAME]_sensors_`
 
 | Sensor Name | Description | Calculated |
@@ -111,9 +121,11 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Pressure Trend | Returns Steady, Falling or Rising determined by the rate of change over the past 3 hours| No |
 | Sea Level Pressure | Preasure measurement at Sea Level | No |
 | Solar Radiation | Electromagnetic radiation emitted by the sun | No |
+| Staton Name | Station Name as state and more information about the station in the Attributes | Yes |
 | Station Pressure | Pressure measurement where the station is located | No |
 | Temperature | Outside Temperature | No |
 | Time of last lightning strike | When the last lightning strike occurred | No |
+| UV Description | A descriptive text of the UV Index | Yes |
 | UV Index | The UV index | No |
 | Voltage | The Voltage of the Tempest device | No |
 | Visibility | Distance to the horizon | Yes |
