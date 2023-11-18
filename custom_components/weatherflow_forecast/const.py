@@ -2,6 +2,9 @@
 
 ATTR_ATTRIBUTION = "Weather data delivered by WeatherFlow"
 ATTR_DESCRIPTION = "description"
+ATTR_HW_FIRMWARE_REVISION = "Firmware Revision"
+ATTR_HW_SERIAL_NUMBER = "Serial Number"
+ATTR_HW_STATION_ID = "Station ID"
 
 BATTERY_MODE_DESCRIPTION = [
     "All sensors enabled and operating at full performance. Wind sampling interval every 3 seconds",
