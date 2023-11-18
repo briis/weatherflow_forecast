@@ -324,6 +324,12 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
+        key="uv_description",
+        name="UV Description",
+        icon="mdi:sun-wireless",
+        translation_key="uv_description",
+    ),
+    WeatherFlowSensorEntityDescription(
         key="visibility",
         name="Visibility",
         native_unit_of_measurement=UnitOfLength.KILOMETERS,
