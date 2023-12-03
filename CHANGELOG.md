@@ -7,6 +7,7 @@ This release is now V1.0, as all the relevant entities from the previous release
 ### Changes
 
 - @zuper83 updated the Swedish Translation.
+- Added new sensor `Precip Intensity` that express the intensity of rain in text. (Can be translated). Closing [#41](https://github.com/briis/weatherflow_forecast/issues/41)
 
 ### TODO
 - If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
