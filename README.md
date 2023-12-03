@@ -115,6 +115,7 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Precipitation duration today Checked | Total rain minutes for the current day. (Reset at midnight). Only if Rain Check enabled and in the US | No |
 | Precipitation duration yesterday | Total rain minutes yesterday | No |
 | Precipitation duration yesterday Checked | Total rain minutes yesterday. Only if Rain Check enabled and in the US | No |
+| Precipitation Intensity| A textual representation on the current rain rate | Yes |
 | Precipitation last hour | Total rain accumulation for the last hour | No |
 | Precipitation Rate | How much is it raining right now | Yes |
 | Precipitation today | Total rain for the current day. (Reset at midnight) | No |
