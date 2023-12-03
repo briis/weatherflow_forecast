@@ -472,6 +472,8 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
 
     @property
     def native_unit_of_measurement(self) -> str | None:
+        """Return unit of sensor."""
+
         if self.entity_description.key == "air_density":
             return super().native_unit_of_measurement if self.hass.config.units is METRIC_SYSTEM else CONCENTRATION_POUND_PER_CUBIC_FOOT
         return super().native_unit_of_measurement
