@@ -1,3 +1,18 @@
+## Release 1.0.1
+
+Date: `2023-12-03`
+
+This release is now V1.0, as all the relevant entities from the previous release are now implemented. Unfortunately my PR for getting this in to Default HACS is not merged yet, but I hope that this will happen soon, and when this does the previous integration will be removed.
+
+### Changes
+
+- @zuper83 updated the Swedish Translation.
+- Added new sensor `Precip Intensity` that express the intensity of rain in text. (Can be translated). Closing [#41](https://github.com/briis/weatherflow_forecast/issues/41)
+- Fixing wrong value and unit for the `Air Density` sensor when using the Imperial Unit System. **WARNING** When digging in to this, the Units for the Metric system was also wrong and is change from µg/m³ to kg/m³. You can correct the unit under the _Developer Tools_ and then _STATISTICS_ if you get a warning during startup.
+
+### TODO
+- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
+
 
 ## Release 1.0.0
 
@@ -15,9 +30,6 @@ This release is now V1.0, as all the relevant entities from the previous release
 - Added new Binary Sensor `Is Freezing`. On when the Celcius temperature is below 0. (Closes #26)
 - Added new Binary Sensor `Is Lightning`. On when Lightning strikes are detected. (Closes #26)
 - Added new Binary Sensor `Is Raining`. On when the rain rate is above 0mm. (Closes #26)
-
-### TODO
-- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
 
 ## Release 0.3.3
 
