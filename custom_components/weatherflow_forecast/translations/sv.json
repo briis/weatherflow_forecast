@@ -77,6 +77,17 @@
                     "hurricane": "Orkan"
                 }
             },
+            "precip_intensity": {
+                "state": {
+                    "no_rain": "Uppehåll",
+                    "very_light": "Stänk",
+                    "light": "Lätt",
+                    "moderate": "Måttligt",
+                    "heavy": "Kraftigt",
+                    "very_heavy": "Rikligt",
+                    "extreme": "Extremt"
+                }
+            },
             "uv_description": {
                 "state": {
                     "extreme": "Extrem",
