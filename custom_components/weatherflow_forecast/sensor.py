@@ -236,6 +236,12 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
+        key="precip_intensity",
+        name="Precipitation Intensity",
+        icon="mdi:weather-rainy",
+        translation_key="precip_intensity",
+    ),
+    WeatherFlowSensorEntityDescription(
         key="precip_minutes_local_day",
         name="Precipitation duration today",
         native_unit_of_measurement=UnitOfTime.MINUTES,
