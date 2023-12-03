@@ -27,6 +27,7 @@ Platform | Description
 -- | --
 `weather` | A Home Assistant `weather` entity, with current data, daily- and hourly forecast data.
 `sensor` | A Home Assistant `sensor` entity, with all available sensor from the API, plus a few local calculated.
+`binary_sensor` | A Home Assistant `binary_sensor` entity, with few local calculated binary sensors.
 
 Minimum required version of Home Assistant is **2023.9.0** as this integration uses the new Weather entity forecast types and it does **not** create Forecast Attributes.
 
