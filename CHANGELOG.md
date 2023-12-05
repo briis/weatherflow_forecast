@@ -1,3 +1,14 @@
+## Release 1.0.2
+
+Date: `NOT RELEASED`
+
+### Changes
+
+- @baylanger updated the French Translation.
+
+### TODO
+- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
+
 ## Release 1.0.1
 
 Date: `2023-12-03`
@@ -9,9 +20,6 @@ This release is now V1.0, as all the relevant entities from the previous release
 - @zuper83 updated the Swedish Translation.
 - Added new sensor `Precip Intensity` that express the intensity of rain in text. (Can be translated). Closing [#41](https://github.com/briis/weatherflow_forecast/issues/41)
 - Fixing wrong value and unit for the `Air Density` sensor when using the Imperial Unit System. **WARNING** When digging in to this, the Unit for the Metric system was also wrong and is changed from µg/m³ to kg/m³. You can correct the unit under the _Developer Tools_ and then _STATISTICS_ if you get a warning during startup. Closing #40
-
-### TODO
-- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
 
 
 ## Release 1.0.0
