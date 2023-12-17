@@ -1,3 +1,11 @@
+## Release 1.0.3
+
+Date: `NOT RELEASED`
+
+### Changes
+
+- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant.
+
 ## Release 1.0.2
 
 Date: `2023-12-16`
@@ -5,9 +13,6 @@ Date: `2023-12-16`
 ### Changes
 
 - @baylanger updated the French Translation.
-
-### TODO
-- If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant. Currently they must be manually removed.
 
 ## Release 1.0.1
 
