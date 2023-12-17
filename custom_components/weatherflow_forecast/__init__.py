@@ -90,12 +90,12 @@ async def cleanup_old_device(hass: HomeAssistant, station_id) -> None:
     device = device_reg.async_get_device(
         identifiers={(DOMAIN, station_id)})  # type: ignore[arg-type]
     if device:
-        _LOGGER.debug("Removing improper device %s", device.name)
+        _LOGGER.debug("Removing deselected sensors: %s", device.name)
         device_reg.async_remove_device(device.id)
     device = device_reg.async_get_device(
         identifiers={(DOMAIN, f"{station_id}_binary")})  # type: ignore[arg-type]
     if device:
-        _LOGGER.debug("Removing improper device %s", device.name)
+        _LOGGER.debug("Removing deselected sensors: %s", device.name)
         device_reg.async_remove_device(device.id)
 
 class CannotConnect(HomeAssistantError):
