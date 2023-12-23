@@ -124,6 +124,7 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Precipitation Rate | How much is it raining right now | Yes |
 | Precipitation today | Total rain for the current day. (Reset at midnight) | No |
 | Precipitation today Checked | Total rain for the current day. (Reset at midnight) Only if Rain Check enabled and in the US | No |
+| Precipitation Type | Type of precipitation. Possible values are: 0 = none, 1 = rain, 2 = hail and 3 = rain+hail (Experimental) | No |
 | Precipitation yesterday | Total rain for yesterday (Reset at midnight) | No |
 | Precipitation yesterday Checked | Total rain for yesterday (Reset at midnight) Only if Rain Check enabled and in the US | No |
 | Pressure Trend | Returns Steady, Falling or Rising determined by the rate of change over the past 3 hours| No |
