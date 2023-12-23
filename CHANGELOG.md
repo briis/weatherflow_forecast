@@ -1,10 +1,11 @@
 ## Release 1.0.3
 
-Date: `NOT RELEASED`
+Date: `2023-12-23`
 
 ### Changes
 
 - If sensors have been installed, and the user selectes to remove them again, ensure they are deleted from Home Assistant.
+- Added new sensor `Precip Type` exposing an integer with the type of precipitation. Possible values are: 0 = none, 1 = rain, 2 = hail and 3 = rain+hail (Experimental)
 
 ## Release 1.0.2
 
