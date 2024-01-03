@@ -33,14 +33,7 @@ Minimum required version of Home Assistant is **2023.9.0** as this integration u
 
 ## Installation through HACS (Recommended Method)
 
-This Integration is not yet part of the default HACS store, but can still be installed through HACS.
-
-- Open HACS, click integrations, and then in the upper right corner click on the three dots.
-- Select *Custom Repositories* and in the bottom add `https://github.com/briis/weatherflow_forecast` to the *Repository* field and under *Category* select *Integration*.
-- Close the dialog box, and you should now see the WeatherFlow Forecast integration show up in HACS as a new integration.
-- Click on it and select the DOWNLOAD button in the lower right corner.
-
-After the installation of the files, you must restart Home Assistant, or else you will not be able to add WeatherFlow Forecast from the Integration Page.
+This Integration is part of the default HACS store. Search for *WeatherFlow Forecast* under Integrations and install from there. After the installation of the files, you must restart Home Assistant, or else you will not be able to add WeatherFlow Forecast from the Integration Page.
 
 If you are not familiar with HACS, or haven't installed it, I would recommend to [look through the HACS documentation](https://hacs.xyz/), before continuing. Even though you can install the Integration manually, I would recommend using HACS, as you would always be reminded when a new release is published.
 
@@ -164,7 +157,7 @@ logger:
 [commits-shield]: https://img.shields.io/github/commit-activity/y/briis/weatherflow_forecast.svg?style=flat-square
 [commits]: https://github.com/briis/weatherflow_forecast/commits/main
 [hacs]: https://github.com/hacs/integration
-[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=flat-square
+[hacsbadge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=flat-square
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=flat-square
 [forum]: https://community.home-assistant.io/
 [license-shield]: https://img.shields.io/github/license/briis/weatherflow_forecast.svg?style=flat-square

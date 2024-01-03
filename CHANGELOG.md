@@ -1,3 +1,12 @@
+## Release 1.0.4
+
+Date: `NOT RELEASED`
+
+### Changes
+
+- This integration is now part of the Default HACS store. So you can delete the pointer to the Github library under *Custom Repositories*
+
+
 ## Release 1.0.3
 
 Date: `2023-12-23`
