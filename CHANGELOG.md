@@ -1,10 +1,11 @@
 ## Release 1.0.4
 
-Date: `NOT RELEASED`
+Date: `2024-01-04`
 
 ### Changes
 
 - This integration is now part of the Default HACS store. So you can delete the pointer to the Github library under *Custom Repositories*
+- Added `wind_gust_speed` to daily forecast, closing [#58](https://github.com/briis/weatherflow_forecast/issues/58)
 
 
 ## Release 1.0.3
