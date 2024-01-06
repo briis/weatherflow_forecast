@@ -1,14 +1,14 @@
 {
-    "domain": "weatherflow_forecast",
-    "name": "WeatherFlow Forecast",
     "codeowners": [
         "@briis"
     ],
     "config_flow": true,
     "dependencies": [],
     "documentation": "https://github.com/briis/weatherflow_forecast",
+    "domain": "weatherflow_forecast",
     "iot_class": "cloud_polling",
     "issue_tracker": "https://github.com/briis/weatherflow_forecast/issues",
+    "name": "WeatherFlow Forecast",
     "requirements": [
         "pyweatherflow-forecast==1.0.5"
     ],
