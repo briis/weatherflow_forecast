@@ -1,3 +1,11 @@
+## Release 1.0.5
+
+Date: `2024-01-06`
+
+### Changes
+
+- Fixing issue [#59](https://github.com/briis/weatherflow_forecast/issues/59)
+
 ## Release 1.0.4
 
 Date: `2024-01-04`
