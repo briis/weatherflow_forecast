@@ -4,7 +4,7 @@ Date: `2024-01-06`
 
 ### Changes
 
-- Fixing issue [#59](https://github.com/briis/weatherflow_forecast/issues/59). As I could not find a way to provole the error, I cannot fully guarantee that this fix will work. If not please open a new issue with detailed logfiles.
+- Fixing issue [#59](https://github.com/briis/weatherflow_forecast/issues/59). As I could not find a way to provoke the error, I cannot fully guarantee that this fix will work. If not please open a new issue with detailed logfiles.
 
 ## Release 1.0.4
 
