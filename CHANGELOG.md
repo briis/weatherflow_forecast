@@ -1,3 +1,11 @@
+## Release 1.0.6
+
+Date: `2024-01-20`
+
+### Changes
+
+- Bump dependency pyweatherflow-forecast to 1.0.6 (Failed setup, will retry #70)
+
 ## Release 1.0.5
 
 Date: `2024-01-06`
