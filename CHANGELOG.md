@@ -1,3 +1,12 @@
+## Release 1.0.7
+
+Date: `NOT RELEASED`
+
+### Changes
+
+- Even though the Station has not transmitted data to WeatherFlow, the device itself, often does, so we are able to post the Voltage, Battery and Power Save Mode from the device itself.
+- New binary sensor `Data Available` is added to the system. If WeatherFlow reports an empty dataset, this is set to False, and you should check your hub and see if it is still online.
+
 ## Release 1.0.6
 
 Date: `2024-01-20`
