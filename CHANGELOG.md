@@ -4,7 +4,13 @@ Date: `2024-01-20`
 
 ### Changes
 
-- Bump dependency pyweatherflow-forecast to 1.0.7 (Failed setup, will retry #69)
+This release is all about error handling. Most issues I get reported are caused by the station being offline for some reason or the sensors not reporting correctly. These two are ofcourse sometimes related, but often the missing update of sensor data is caused by the Tempest device being underpowered. For a person like myself who live in the Northern Hemisphere, this always happens in the winther when there is not enough daylight to charge the battery. So after sometime the device will reduce the reporting intervals and the sensors it reports, until the time when the power is so low that it stops sending any data.
+
+- As of this release the system will write a warning to the logfile if it detects that there is no data. It will continue working, but there will be no data in the sensors until the station comes back online.
+- Also at the time of setup, if you try to add the sensors, an error will be shown if there are no sensor data, and you cannot add the sensors until the issue is resolved. The forecast can always be added.
+- Finally, if you discover that sensor data is not being updated or only some of them, check the `power_save_mode` sensor. Any number here greater than 0 will mena reduced updating of sensors. You can read more about the Power Save Mode [here](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery)
+- Bump dependency pyweatherflow-forecast to 1.0.8 (Failed setup, will retry #70 and Error while setting up weatherflow_forecast platform for sensor #69)
+
 
 ## Release 1.0.5
 
