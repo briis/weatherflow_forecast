@@ -1,6 +1,6 @@
 ## Release 1.0.7
 
-Date: `NOT RELEASED`
+Date: `2024-01-22`
 
 ### Changes
 
