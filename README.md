@@ -1,5 +1,5 @@
 # WeatherFlow Forecast and Sensor integration for Home Assistant
-Home Assistant integration for WeatherFlow Forecast
+Home Assistant integration for WeatherFlow Cloud Based Data using the REST API
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
