@@ -79,6 +79,7 @@ All entities are prefixed with `[STATION NAME]_binary_sensors_`
 
 | Sensor Name | Description | Calculated |
 | --- | --- | --- |
+| Data Available | Will be Off if no sensor data is returned from WeatherFlow. This typically happens if the station has not transmitted data for a while and you should check the status of the Station or the attached device. | Yes |
 | Is Freezing | On when the Celcius temperature is below 0 | Yes |
 | Is Lightning | On when Lightning strikes are detected | Yes |
 | Is Raining | On when the rain rate is above 0mm | Yes |
@@ -96,7 +97,6 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Beaufort | Beaufort scale is an empirical measure that relates wind speed to observed conditions at sea or on land | Yes |
 | Beaufort Description | A descriptive text of the Beaufort value | Yes |
 | Cloud Base| The cloud height altitude above sea level | Yes |
-| Data Available | Will be Off if no sensor data is returned from WeatherFlow. This typically happens if the station has not transmitted data for a while and you should check the status of the Station or the attached device. | Yes |
 | Data Updated | The time of the last data update. Disabled by default.  | No |
 | Delta T | Difference between Air Temperature and Wet Bulb Temperature | No |
 | Dew Point | Dewpoint in degrees | No |
