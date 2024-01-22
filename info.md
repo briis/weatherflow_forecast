@@ -1,5 +1,5 @@
 # WeatherFlow Forecast and Sensor integration for Home Assistant
-Home Assistant integration for WeatherFlow Forecast
+Home Assistant integration for WeatherFlow Cloud Based Data using the REST API
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
@@ -7,6 +7,8 @@ Home Assistant integration for WeatherFlow Forecast
 [![hacs][hacsbadge]][hacs]
 ![Project Maintenance][maintenance-shield]
 [![Community Forum][forum-shield]][forum]
+
+<a href="https://www.buymeacoffee.com/briis" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;" ></a>
 
 <p align="center">
   <img width="384" height="128" src="https://github.com/briis/weatherflow_forecast/blob/main/images/logo@2x.png?raw=true">
@@ -21,7 +23,8 @@ For this integration you **must own a WeatherFlow weather station** and you must
 Platform | Description
 -- | --
 `weather` | A Home Assistant `weather` entity, with current data, daily- and hourly forecast data.
-`sensor` | A Home Assistant `sensor` entity, with all available sensors from the API, plus a few local calculated.
+`sensor` | A Home Assistant `sensor` entity, with all available sensor from the API, plus a few local calculated.
+`binary_sensor` | A Home Assistant `binary_sensor` entity, with few local calculated binary sensors.
 
 Minimum required version of Home Assistant is **2023.9.0** as this integration uses the new Weather entity forecast types and it does **not** create Forecast Attributes.
 
@@ -37,14 +40,15 @@ To add WeatherFlow Forecast to your installation, do the following:
 
   | Parameter | Required | Default Value | Description |
   | --------- | -------- | ------------- | ----------- |
-  | `Station ID` | Yes | None | The Station ID for your weathwer station. |
-  | `API Token` | Yes | None | The personal API Token you created as per instructions above. |
+  | `Station ID` | Yes | None | Each WeatherFlow Station you setup, will get a unique Station ID, this id is needed during configuration. To get your Station ID, [login with your account](https://tempestwx.com/settings/stations/), select the station on the list, and then click *Status*. Here you will find your Station ID. |
+  | `API Token` | Yes | None | The WeatherFlow REST API requires a Token. Please [login with your account](https://tempestwx.com/settings/tokens) and create the token. Go to Settings and choose Data Authorizations (almost at the bottom). Create a personal access token and use that as Token (API key). |
   | `Add Sensors` | No | False | Mark the box if you want to have all the available sensors from the Rest API add to Home Assistant |
 
 - Click on SUBMIT to save your data. If all goes well you should now have a new Weather entity with data from WeatherFlow Forecast
+- **Please Note**: The Token you create here will ONLY work with Stations that are registered under the same Login.
 
-You can configure more than 1 instance of the Integration by using a different Station ID and new API Token.
 
+You can configure more than 1 instance of the Integration by using a different Station ID.
 
 ***
 
