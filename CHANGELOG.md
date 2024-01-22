@@ -6,6 +6,9 @@ Date: `NOT RELEASED`
 
 - Even though the Station has not transmitted data to WeatherFlow, the device itself, often does, so we are able to post the Voltage, Battery and Power Save Mode from the device itself.
 - New binary sensor `Data Available` is added to the system. If WeatherFlow reports an empty dataset, this is set to False, and you should check your hub and see if it is still online.
+- Added better error handling if user types in the wrong Station ID upon configuration. The error is now trapped, and a more detailed error message supplied.
+- Bump dependency module pyweatherflow-forecast to 1.0.10
+
 
 ## Release 1.0.6
 
