@@ -61,6 +61,7 @@ To add WeatherFlow Forecast to your installation, do the following:
   | --------- | -------- | ------------- | ----------- |
   | `Station ID` | Yes | None | Each WeatherFlow Station you setup, will get a unique Station ID, this id is needed during configuration. To get your Station ID, [login with your account](https://tempestwx.com/settings/stations/), select the station on the list, and then click *Status*. Here you will find your Station ID. |
   | `API Token` | Yes | None | The WeatherFlow REST API requires a Token. Please [login with your account](https://tempestwx.com/settings/tokens) and create the token. Go to Settings and choose Data Authorizations (almost at the bottom). Create a personal access token and use that as Token (API key). |
+  | `Forecast Hours` | No | 48 | Adjust the number of hours you want returned for the hourly forecast. Min is 12, max is 96 hours. |
   | `Add Sensors` | No | False | Mark the box if you want to have all the available sensors from the Rest API add to Home Assistant |
 
 - Click on SUBMIT to save your data. If all goes well you should now have a new Weather entity with data from WeatherFlow Forecast
