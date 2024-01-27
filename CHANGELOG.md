@@ -1,3 +1,13 @@
+## Release 1.0.8
+
+Date: `2024-01-27`
+
+### Changes
+
+- Added option to adjust number of hours returned in the hourly forecast. Min is 12 hours and maximum is 96 hours. Default is 48 hours. Closing [#74](https://github.com/briis/weatherflow_forecast/issues/74)
+- As a result of this, text in the config form needs more translation for certain languages.
+- Bumped dependency pyweatherflow-forecast to 1.0.11
+
 ## Release 1.0.7
 
 Date: `2024-01-22`
