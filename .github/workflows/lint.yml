@@ -7,6 +7,7 @@ on:
       - "**/info.md"
       - "**/CHANGELOG.md"
       - "**/CONTRIBUTING.md"
+      - "**/requirements.txt"
     branches:
       - "main"
   pull_request:
