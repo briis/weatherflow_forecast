@@ -1,3 +1,11 @@
+## Release 1.0.9
+
+Date: `2024-XX-XX`
+
+### Changes
+
+- Changed rain sensor state class to TOTAL_INCREASING, to better support statiscal sensors.
+
 ## Release 1.0.8
 
 Date: `2024-01-27`
