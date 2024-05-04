@@ -1,6 +1,6 @@
 ## Release 1.0.9
 
-Date: `2024-XX-XX`
+Date: `2024-05-04`
 
 ### Changes
 
