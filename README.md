@@ -111,6 +111,7 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Lightning Strikes last hour | Number of lightning strikes during the last hour | No |
 | Lightning Strikes last 3 hours | Number of lightning strikes the last 3 hours | No |
 | Power Save Mode | [Power Save Mode](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery) of a Tempest device | Yes |
+| Precipitation Description | Type of precipitation. Possible values are: Dry, Rain, Heavy rain/Hail. The values can be translated in to local language. | No |
 | Precipitation duration today | Total rain minutes for the current day. (Reset at midnight) | No |
 | Precipitation duration today Checked | Total rain minutes for the current day. (Reset at midnight). Only if Rain Check enabled and in the US | No |
 | Precipitation duration yesterday | Total rain minutes yesterday | No |
@@ -120,7 +121,7 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Precipitation Rate | How much is it raining right now | Yes |
 | Precipitation today | Total rain for the current day. (Reset at midnight) | No |
 | Precipitation today Checked | Total rain for the current day. (Reset at midnight) Only if Rain Check enabled and in the US | No |
-| Precipitation Type | Type of precipitation. Possible values are: 0 = none, 1 = rain, 2 = hail and 3 = rain+hail (Experimental) | No |
+| Precipitation Type | Type of precipitation. Possible values are: 0 = none, 1 = rain, 2 = heavy rain/hail | No |
 | Precipitation yesterday | Total rain for yesterday (Reset at midnight) | No |
 | Precipitation yesterday Checked | Total rain for yesterday (Reset at midnight) Only if Rain Check enabled and in the US | No |
 | Pressure Trend | Returns Steady, Falling or Rising determined by the rate of change over the past 3 hours| No |
