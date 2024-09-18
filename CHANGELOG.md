@@ -1,3 +1,12 @@
+## Release 1.0.10
+
+Date: `2024-09-18`
+
+### Changes
+
+* Added `precip_type_text` sensor, which describes what type of precipitation is measured. (No Rain, Rain or Heavy Rain/Hail). **NOTE** Except for danish the text needs translation for the other languages. Please submit a pull request if you can translate the text.
+
+
 ## Release 1.0.9
 
 Date: `2024-05-04`
