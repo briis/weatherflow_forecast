@@ -1,6 +1,15 @@
-## Release 1.0.10
+## Release 1.0.11
 
 Date: `2024-09-18`
+
+### Changes
+
+* Updated French translation. Thank you @MichelJourdain
+
+
+## Release 1.0.10
+
+Date: `NOT RELEASED`
 
 ### Changes
 
