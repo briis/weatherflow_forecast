@@ -111,7 +111,7 @@ All entities are prefixed with `[STATION NAME]_sensors_`
 | Lightning Strikes last hour | Number of lightning strikes during the last hour | No |
 | Lightning Strikes last 3 hours | Number of lightning strikes the last 3 hours | No |
 | Power Save Mode | [Power Save Mode](https://help.weatherflow.com/hc/en-us/articles/360048877194-Solar-Power-Rechargeable-Battery) of a Tempest device | Yes |
-| Precipitation Description | Type of precipitation. Possible values are: Dry, Rain, Heavy rain/Hail. The values can be translated in to local language. | No |
+| Precipitation Description | Type of precipitation. Possible values are: Dry, Rain, Heavy rain/Hail. State values are: (`no_rain`,`rain`,`heavy_rain`,) The values can be translated in to local language. | No |
 | Precipitation duration today | Total rain minutes for the current day. (Reset at midnight) | No |
 | Precipitation duration today Checked | Total rain minutes for the current day. (Reset at midnight). Only if Rain Check enabled and in the US | No |
 | Precipitation duration yesterday | Total rain minutes yesterday | No |
