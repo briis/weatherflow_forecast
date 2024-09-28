@@ -67,7 +67,7 @@
                 "state": {
                     "no_rain": "Torrt",
                     "rain": "Regn",
-                    "heavy_rain": "Mycket regn/Hagel"
+                    "heavy_rain": "Kraftigt regn/Hagel"
                 }
             },
             "beaufort": {
