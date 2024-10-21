@@ -56,6 +56,7 @@ async def async_setup_entry(
         name = DEFAULT_NAME
     elif TYPE_CHECKING:
         assert isinstance(name, str)
+    _LOGGER.debug("Setting up weather entity for station %s", name)
 
     entities = [WeatherFlowWeather(coordinator, config_entry.data,
                                    False, name, is_metric)]
@@ -73,7 +74,7 @@ async def async_setup_entry(
 
 def _calculate_unique_id(config: MappingProxyType[str, Any], hourly: bool) -> str:
     """Calculate unique ID."""
-    name_appendix = ""
+    name_appendix = "-daily"
     if hourly:
         name_appendix = "-hourly"
 
