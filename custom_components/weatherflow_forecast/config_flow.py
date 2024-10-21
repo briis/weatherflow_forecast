@@ -80,7 +80,8 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
             errors["base"] = "wrong_token"
             return await self._show_setup_form(errors)
 
-        await self.async_set_unique_id(f"{DOMAIN}-{user_input[CONF_STATION_ID]}")
+        _LOGGER.debug("Unique ID: %s", f"{user_input[CONF_STATION_ID]}-{station_data.device_id}")
+        await self.async_set_unique_id(f"{user_input[CONF_STATION_ID]}-{station_data.device_id}")
         self._abort_if_unique_id_configured
 
         return self.async_create_entry(
