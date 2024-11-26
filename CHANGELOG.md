@@ -1,3 +1,12 @@
+## Release 1.1.0
+
+Date: `NOT REASED YET`
+
+### Changes
+
+* **BREAKING CHANGE** As of 2024.10.x of Home Assistant, the integration is now creating the error `weatherflow_forecast has an invalid unique_id`. With this release, this has been fixed as the Unique ID hasd been changed to live up to new requirements. The integration will continue to run even after installing this update and without doing anything, but the only way you can get rid of the error in the log, is to remove the integration and add it again.
+
+
 ## Release 1.0.11
 
 Date: `2024-10-21`
