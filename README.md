@@ -34,20 +34,29 @@ Minimum required version of Home Assistant is **2023.9.0** as this integration u
 
 ## Installation through HACS (Recommended Method)
 
-This Integration is part of the default HACS store. Search for *WeatherFlow Forecast* under Integrations and install from there. After the installation of the files, you must restart Home Assistant, or else you will not be able to add WeatherFlow Forecast from the Integration Page.
+This Integration is part of the default HACS store. Search for WeatherFlow Forecast under Integrations and install from there. You can also download using this My link:
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=briis&repository=weatherflow_forecast&category=integration)
+
+After the installation of the files, you must restart Home Assistant, or else you will not be able to add WeatherFlow Forecast from the Integration Page.
+
+Once restarted, you can go to "Configuration" -> "Integrations" click "+" and search for "WeatherFlow Forecast" or use this My link:
+
+[![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=weatherflow_forecast)
 
 If you are not familiar with HACS, or haven't installed it, I would recommend to [look through the HACS documentation](https://hacs.xyz/), before continuing. Even though you can install the Integration manually, I would recommend using HACS, as you would always be reminded when a new release is published.
 
 ## Manual Installation
 
 1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
-1. If you do not have a `custom_components` directory (folder) there, you need to create it.
-1. In the `custom_components` directory (folder) create a new folder called `weatherflow_forecast`.
-1. Download _all_ the files from the `custom_components/weatherflow_forecast/` directory (folder) in this repository.
-1. Place the files you downloaded in the new directory (folder) you created.
-1. Restart Home Assistant
-1. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "WeatherFlow Forecast"
+2. If you do not have a `custom_components` directory (folder) there, you need to create it.
+3. In the `custom_components` directory (folder) create a new folder called `weatherflow_forecast`.
+4. Download _all_ the files from the `custom_components/weatherflow_forecast/` directory (folder) in this repository.
+5. Place the files you downloaded in the new directory (folder) you created.
+6. Restart Home Assistant
+7. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "WeatherFlow Forecast" or use this My link:
 
+[![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=weatherflow_forecast)
 
 ## Configuration
 
