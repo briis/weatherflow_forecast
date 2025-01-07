@@ -1,12 +1,20 @@
 ## Release 1.0.11
 
+Date: `2024-01-08`
+
+### Changes
+
+* Added `precipiation_icon` and `precipiation_type to Daily and Hourly Forecast.` Closing [#211](https://github.com/briis/weatherflow_forecast/issues/211)
+* Bumped `pyweatherflow_forecast` to V1.1.1
+
+## Release 1.0.11
+
 Date: `2024-10-21`
 
 ### Changes
 
 * Updated French translation. Thank you @MichelJourdain
 * Updated Swedish translation. Thank you @zuper83
-
 
 ## Release 1.0.10
 
@@ -16,7 +24,6 @@ Date: `2024-09-18`
 
 * Added `precipitation_description` sensor, which describes what type of precipitation is measured. (No Rain, Rain or Heavy Rain/Hail). **NOTE** Except for danish, the text needs translation for the other languages. Please submit a pull request if you can translate the text.
 * Made changes to ensure compatability with HACS 2.0
-
 
 ## Release 1.0.9
 
