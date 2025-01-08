@@ -1,10 +1,11 @@
-## Release 1.0.11
+## Release 1.0.12
 
 Date: `2024-01-08`
 
 ### Changes
 
 * Added `precipiation_icon` and `precipiation_type to Daily and Hourly Forecast.` Closing [#211](https://github.com/briis/weatherflow_forecast/issues/211)
+* Fixing `invalid unique_id of type int when a string is expected`. Cloisng [#210](https://github.com/briis/weatherflow_forecast/issues/210)
 * Bumped `pyweatherflow_forecast` to V1.1.1
 
 ## Release 1.0.11
