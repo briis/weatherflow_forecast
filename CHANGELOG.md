@@ -8,6 +8,8 @@ Date: `2025-01-08`
 * Fixing `invalid unique_id of type int when a string is expected`. Cloisng [#210](https://github.com/briis/weatherflow_forecast/issues/210)
 * Bumped `pyweatherflow_forecast` to V1.1.1
 
+## [Dependabot](https://github.com/apps/dependabot) updates
+
 ## Release 1.0.11
 
 Date: `2024-10-21`
