@@ -9,6 +9,7 @@ from homeassistant.const import CONF_NAME
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
+from homeassistant.helpers.event import async_call_later
 from pyweatherflow_forecast import (
     WeatherFlow,
     WeatherFlowStationData,
@@ -18,6 +19,7 @@ from pyweatherflow_forecast import (
     WeatherFlowForecastUnauthorized,
     WeatherFlowForecastWongStationId,
 )
+from . import async_setup_entry, async_unload_entry
 from .const import (
     DEFAULT_ADD_SENSOR,
     DEFAULT_FORECAST_HOURS,
@@ -54,8 +56,12 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
         session = async_create_clientsession(self.hass)
 
         try:
-            weatherflow_api = WeatherFlow(user_input[CONF_STATION_ID],
-                                          user_input[CONF_API_TOKEN], session=session)
+            weatherflow_api = await self.hass.async_add_executor_job(
+                lambda: WeatherFlow(user_input[CONF_STATION_ID],
+                                    user_input[CONF_API_TOKEN], session=session)
+            )
+            # weatherflow_api = WeatherFlow(user_input[CONF_STATION_ID],
+            #                               user_input[CONF_API_TOKEN], session=session)
 
             station_data: WeatherFlowStationData = await weatherflow_api.async_get_station()
             if user_input[CONF_ADD_SENSORS]:
@@ -121,10 +127,20 @@ class WeatherFlowForecastOptionsFlowHandler(config_entries.OptionsFlow):
         """Initialize the WeatherFlow Forecast Options Flows."""
         self._config_entry = config_entry
 
+    async def _do_update(
+        self,
+        *args,
+        **kwargs,  # pylint: disable=unused-argument
+    ) -> None:
+        """Update after settings change."""
+        await async_unload_entry(self.hass, self.config_entry)
+        await async_setup_entry(self.hass, self.config_entry)
+
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Configure Options for WeatherFlow Forecast."""
 
         if user_input is not None:
+            async_call_later(self.hass, 2, self._do_update)
             return self.async_create_entry(title="", data=user_input)
 
         return self.async_show_form(
