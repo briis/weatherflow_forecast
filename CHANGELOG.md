@@ -1,3 +1,14 @@
+## Release 1.0.13
+
+Date: `2025-01-12`
+
+### Changes
+
+* Fixing Blocking Errors in Home Assistant 2025.1
+* Bumped `pyweatherflow_forecast` to V1.1.1
+
+## [Dependabot](https://github.com/apps/dependabot) updates
+
 ## Release 1.0.12
 
 Date: `2025-01-08`
