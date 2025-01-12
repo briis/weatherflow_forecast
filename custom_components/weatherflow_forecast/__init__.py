@@ -20,7 +20,7 @@ from pyweatherflow_forecast import (
     WeatherFlowStationData,
 )
 
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import ConfigEntry, ConfigEntryState
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError, ConfigEntryNotReady, Unauthorized
@@ -65,7 +65,10 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
 
     coordinator = WeatherFlowForecastDataUpdateCoordinator(
         hass, config_entry, add_sensors, forecast_hours)
-    await coordinator.async_config_entry_first_refresh()
+    if ConfigEntryState == ConfigEntryState.SETUP_IN_PROGRESS:
+        await coordinator.async_config_entry_first_refresh()
+    else:
+        await coordinator.async_refresh()
 
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][config_entry.entry_id] = coordinator
@@ -112,7 +115,7 @@ async def cleanup_old_device(hass: HomeAssistant, station_id) -> None:
 class CannotConnect(HomeAssistantError):
     """Unable to connect to the web site."""
 
-class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlowForecastWeatherData"]):
+class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching WeatherFlow data."""
 
     def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry, add_sensors: bool, forecast_hours: int) -> None:
@@ -130,7 +133,7 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator["WeatherFlo
         else:
             update_interval = timedelta(minutes=randrange(25, 35))
 
-        super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=update_interval)
+        super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=update_interval, config_entry=config_entry)
 
     async def _async_update_data(self) -> WeatherFlowForecastWeatherData:
         """Fetch data from WeatherFlow Forecast."""
