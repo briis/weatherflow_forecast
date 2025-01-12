@@ -39,6 +39,7 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Config Flow for WeatherFlow Forecast."""
 
     VERSION = 1
+    CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
 
     @staticmethod
     @callback
@@ -60,8 +61,6 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 lambda: WeatherFlow(user_input[CONF_STATION_ID],
                                     user_input[CONF_API_TOKEN], session=session)
             )
-            # weatherflow_api = WeatherFlow(user_input[CONF_STATION_ID],
-            #                               user_input[CONF_API_TOKEN], session=session)
 
             station_data: WeatherFlowStationData = await weatherflow_api.async_get_station()
             if user_input[CONF_ADD_SENSORS]:
