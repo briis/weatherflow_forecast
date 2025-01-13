@@ -78,7 +78,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
 
     if not add_sensors:
-        await cleanup_old_device(hass, config_entry.data[CONF_STATION_ID])
+        await cleanup_old_device(hass, str(config_entry.data[CONF_STATION_ID]))
 
     return True
 
@@ -163,7 +163,7 @@ class WeatherFlowForecastWeatherData:
         """Establish connection to API."""
 
         self._weather_data = WeatherFlow(
-            self._config[CONF_STATION_ID], self._config[CONF_API_TOKEN], elevation=self.hass.config.elevation, session=async_get_clientsession(self.hass), forecast_hours=self._forecast_hours)
+            str(self._config[CONF_STATION_ID]), self._config[CONF_API_TOKEN], elevation=self.hass.config.elevation, session=async_get_clientsession(self.hass), forecast_hours=self._forecast_hours)
 
         return True
 

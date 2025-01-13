@@ -442,7 +442,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, asyn
     """WeatherFlow sensor platform."""
     coordinator: WeatherFlowForecastDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
-    if coordinator.data.sensor_data == {}:
+    if coordinator.data.sensor_data is None:
         return
 
     entities: list[WeatherFlowSensor[Any]] = [
@@ -462,7 +462,7 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
         self,
         coordinator: WeatherFlowForecastDataUpdateCoordinator,
         description: WeatherFlowSensorEntityDescription,
-        config: MappingProxyType[str, Any]
+        config: ConfigEntry
     ) -> None:
         """Initialize a WeatherFlow sensor."""
         super().__init__(coordinator)
@@ -477,7 +477,8 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
             manufacturer=MANUFACTURER,
             model=MODEL,
             name=f"{self._config.data[CONF_NAME]} Sensors",
-            configuration_url=f"https://tempestwx.com/station/{self._config.data[CONF_STATION_ID]}/grid",
+            configuration_url=f"https://tempestwx.com/station/{
+                self._config.data[CONF_STATION_ID]}/grid",
             hw_version=f"FW V{self._hw_version}",
         )
         self._attr_attribution = ATTR_ATTRIBUTION
