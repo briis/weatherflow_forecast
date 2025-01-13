@@ -27,6 +27,7 @@ from homeassistant.exceptions import HomeAssistantError, ConfigEntryNotReady, Un
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.loader import async_get_integration
 
 from .const import (
     DEFAULT_ADD_SENSOR,
@@ -36,6 +37,7 @@ from .const import (
     CONF_API_TOKEN,
     CONF_FORECAST_HOURS,
     CONF_STATION_ID,
+    STARTUP,
 )
 
 PLATFORMS = [Platform.WEATHER, Platform.SENSOR, Platform.BINARY_SENSOR]
@@ -59,6 +61,9 @@ def _get_forecast_hours(config_entry: ConfigEntry):
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Set up WeatherFlow Forecast as config entry."""
+    hass.data.setdefault(DOMAIN, {})
+    integration = await async_get_integration(hass, DOMAIN)
+    _LOGGER.info(STARTUP, integration.version)
 
     add_sensors = _get_platforms(config_entry)
     forecast_hours = _get_forecast_hours(config_entry)
