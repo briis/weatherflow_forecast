@@ -6,7 +6,7 @@ Date: `2025-01-13`
 
 * Fixing "Failed setup, will retry" with "Updated failed: 'time'". Closing [WeatherFlow Forecast #99](https://github.com/briis/weatherflow_forecast/issues/99)
 * Fixing Blocking Errors in Home Assistant 2025.1
-* Bumped `pyweatherflow_forecast` to V1.1.1
+* Bumped `pyweatherflow_forecast` to V1.1.2
 
 ## [Dependabot](https://github.com/apps/dependabot) updates
 
