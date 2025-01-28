@@ -1,4 +1,5 @@
 {
     "name": "WeatherFlow Forecast and Sensor Integration",
-    "homeassistant": "2023.9.0"
+    "content_in_root": false,
+    "homeassistant": "2025.1.0"
 }
