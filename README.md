@@ -32,6 +32,10 @@ Platform | Description
 
 Minimum required version of Home Assistant is **2023.9.0** as this integration uses the new Weather entity forecast types and it does **not** create Forecast Attributes.
 
+### Removal of the Public Developer Key
+
+Since the release of the WeatherFlow API, there has been a generic *Developer Key* that would work to retrieve data from all Public Stations. **As of March, 27th 2025, this key will no longer work**. Please see [this post](https://community.tempest.earth/t/eol-for-the-shared-api-key-old-option/26923) by WeatherFlow. So if you don't own a WeatherFlow station, you will no longer be able to get an API Key, and this Integration will not work for you.
+
 ## Installation through HACS (Recommended Method)
 
 This Integration is part of the default HACS store. Search for WeatherFlow Forecast under Integrations and install from there. You can also download using this My link:
