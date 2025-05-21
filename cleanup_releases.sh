@@ -2,10 +2,10 @@
 
 # Settings
 REPO="briis/weatherflow_forecast"
-DAYS_OLD=90
+DAYS_OLD=180
 
 # Get date for cutoff
-CUTOFF_DATE=$(date -d "$DAYS_OLD days ago" --iso-8601)
+CUTOFF_DATE=$(date -v-"$DAYS_OLD"d +"%Y-%m-%d")
 
 echo "Deleting releases older than end $CUTOFF_DATE in repo $REPO..."
 
