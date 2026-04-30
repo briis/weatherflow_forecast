@@ -17,6 +17,7 @@
                 "charliermarsh.ruff",
                 "github.vscode-pull-request-github",
                 "ms-python.python",
+                "ms-python.autopep8",
                 "ms-python.vscode-pylance",
                 "ryanluker.vscode-coverage-gutters"
             ],
@@ -30,7 +31,7 @@
                 "python.analysis.typeCheckingMode": "basic",
                 "python.analysis.autoImportCompletions": true,
                 "[python]": {
-                    "editor.defaultFormatter": "charliermarsh.ruff"
+                    "editor.defaultFormatter": "ms-python.autopep8"
                 }
             }
         }
