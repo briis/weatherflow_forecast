@@ -9,7 +9,6 @@ from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
-from homeassistant.helpers.event import async_call_later
 from pyweatherflow_forecast import (
     WeatherFlow,
     WeatherFlowStationData,
@@ -19,7 +18,6 @@ from pyweatherflow_forecast import (
     WeatherFlowForecastUnauthorized,
     WeatherFlowForecastWongStationId,
 )
-from . import async_setup_entry, async_unload_entry
 from .const import (
     DEFAULT_ADD_SENSOR,
     DEFAULT_FORECAST_HOURS,
@@ -137,21 +135,21 @@ class WeatherFlowForecastOptionsFlowHandler(config_entries.OptionsFlow):
         """Initialize the WeatherFlow Forecast Options Flows."""
         self._config_entry = config_entry
 
-    async def _do_update(
-        self,
-        *args,
-        **kwargs,  # pylint: disable=unused-argument
-    ) -> None:
-        """Update after settings change."""
-        await async_unload_entry(self.hass, self.config_entry)
-        await async_setup_entry(self.hass, self.config_entry)
-
     async def async_step_init(self, user_input: dict[str, Any] | None = None):
         """Configure Options for WeatherFlow Forecast."""
 
         if user_input is not None:
-            async_call_later(self.hass, 2, self._do_update)
-            return self.async_create_entry(title="", data=user_input)
+            self.hass.config_entries.async_update_entry(
+                self._config_entry,
+                data={**self._config_entry.data, CONF_API_TOKEN: user_input[CONF_API_TOKEN]},
+            )
+            return self.async_create_entry(
+                title="",
+                data={
+                    CONF_FORECAST_HOURS: user_input[CONF_FORECAST_HOURS],
+                    CONF_ADD_SENSORS: user_input[CONF_ADD_SENSORS],
+                },
+            )
 
         return self.async_show_form(
             step_id="init",
