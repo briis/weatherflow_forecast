@@ -4,3 +4,4 @@ pip>=26.1,<26.2
 ruff==0.15.12
 zlib_ng==1.0.0
 isal==1.8.0
+pyweatherflow-forecast
