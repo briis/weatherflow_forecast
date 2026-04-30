@@ -6,7 +6,7 @@ from datetime import timedelta
 import logging
 from random import randrange
 from types import MappingProxyType
-from typing import Any, Self
+from typing import Any, Self, cast
 
 from pyweatherflow_forecast import (
     WeatherFlow,
@@ -50,26 +50,14 @@ PLATFORMS = [Platform.WEATHER, Platform.SENSOR, Platform.BINARY_SENSOR]
 _LOGGER = logging.getLogger(__name__)
 
 
-def _get_platforms(config_entry: ConfigEntry):
-
-    add_sensors = (
-        DEFAULT_ADD_SENSOR
-        if config_entry.options.get(CONF_ADD_SENSORS) is None
-        else config_entry.options.get(CONF_ADD_SENSORS)
-    )
-
-    return add_sensors
+def _get_platforms(config_entry: ConfigEntry) -> bool:
+    val = config_entry.options.get(CONF_ADD_SENSORS)
+    return DEFAULT_ADD_SENSOR if val is None else bool(val)
 
 
-def _get_forecast_hours(config_entry: ConfigEntry):
-
-    forecast_hours = (
-        DEFAULT_FORECAST_HOURS
-        if config_entry.options.get(CONF_FORECAST_HOURS) is None
-        else config_entry.options.get(CONF_FORECAST_HOURS)
-    )
-
-    return forecast_hours
+def _get_forecast_hours(config_entry: ConfigEntry) -> int:
+    val = config_entry.options.get(CONF_FORECAST_HOURS)
+    return DEFAULT_FORECAST_HOURS if val is None else int(val)
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
@@ -84,7 +72,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     coordinator = WeatherFlowForecastDataUpdateCoordinator(
         hass, config_entry, add_sensors, forecast_hours
     )
-    if ConfigEntryState == ConfigEntryState.SETUP_IN_PROGRESS:
+    if config_entry.state == ConfigEntryState.SETUP_IN_PROGRESS:
         await coordinator.async_config_entry_first_refresh()
     else:
         await coordinator.async_refresh()
@@ -136,7 +124,9 @@ class CannotConnect(HomeAssistantError):
     """Unable to connect to the web site."""
 
 
-class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator):
+class WeatherFlowForecastDataUpdateCoordinator(
+    DataUpdateCoordinator["WeatherFlowForecastWeatherData"]
+):
     """Class to manage fetching WeatherFlow data."""
 
     def __init__(
@@ -193,17 +183,17 @@ class WeatherFlowForecastWeatherData:
         self._add_sensors = add_sensors
         self._forecast_hours = forecast_hours
         self._weather_data: WeatherFlow
-        self.current_weather_data: WeatherFlowForecastData = {}
-        self.daily_forecast: WeatherFlowForecastDaily = []
-        self.hourly_forecast: WeatherFlowForecastHourly = []
-        self.sensor_data: WeatherFlowSensorData = {}
-        self.station_data: WeatherFlowStationData = {}
+        self.current_weather_data: WeatherFlowForecastData | None = None
+        self.daily_forecast: list[WeatherFlowForecastDaily] = []
+        self.hourly_forecast: list[WeatherFlowForecastHourly] = []
+        self.sensor_data: WeatherFlowSensorData | None = None
+        self.station_data: WeatherFlowStationData | None = None
 
     def initialize_data(self) -> bool:
         """Establish connection to API."""
 
         self._weather_data = WeatherFlow(
-            str(self._config[CONF_STATION_ID]),
+            int(self._config[CONF_STATION_ID]),
             self._config[CONF_API_TOKEN],
             elevation=self.hass.config.elevation,
             session=async_get_clientsession(self.hass),
@@ -216,15 +206,15 @@ class WeatherFlowForecastWeatherData:
         """Fetch data from API - (current weather and forecast)."""
 
         try:
-            resp: WeatherFlowForecastData = (
-                await self._weather_data.async_get_forecast()
+            forecast_data = cast(
+                WeatherFlowForecastData, await self._weather_data.async_get_forecast()
             )
         except WeatherFlowForecastWongStationId as unauthorized:
             _LOGGER.debug(unauthorized)
             raise Unauthorized from unauthorized
         except WeatherFlowForecastBadRequest as err:
             _LOGGER.debug(err)
-            return False
+            raise UpdateFailed(str(err)) from err
         except WeatherFlowForecastUnauthorized as unauthorized:
             _LOGGER.debug(unauthorized)
             raise Unauthorized from unauthorized
@@ -232,26 +222,32 @@ class WeatherFlowForecastWeatherData:
             _LOGGER.debug(notreadyerror)
             raise ConfigEntryNotReady from notreadyerror
 
-        if not resp:
+        if not forecast_data:
             raise CannotConnect()
-        self.current_weather_data = resp
-        self.daily_forecast = resp.forecast_daily
-        self.hourly_forecast = resp.forecast_hourly
+        self.current_weather_data = forecast_data
+        self.daily_forecast = cast(
+            list[WeatherFlowForecastDaily], forecast_data.forecast_daily
+        )
+        self.hourly_forecast = cast(
+            list[WeatherFlowForecastHourly], forecast_data.forecast_hourly
+        )
 
         if self._add_sensors:
             try:
-                resp: WeatherFlowSensorData = (
-                    await self._weather_data.async_fetch_sensor_data()
+                sensor_data = cast(
+                    WeatherFlowSensorData,
+                    await self._weather_data.async_fetch_sensor_data(),
                 )
-                station_info: WeatherFlowStationData = (
-                    await self._weather_data.async_get_station()
+                station_info = cast(
+                    WeatherFlowStationData,
+                    await self._weather_data.async_get_station(),
                 )
             except WeatherFlowForecastWongStationId as unauthorized:
                 _LOGGER.debug(unauthorized)
                 raise Unauthorized from unauthorized
             except WeatherFlowForecastBadRequest as err:
                 _LOGGER.debug(err)
-                return False
+                raise UpdateFailed(str(err)) from err
             except WeatherFlowForecastUnauthorized as unauthorized:
                 _LOGGER.debug(unauthorized)
                 raise Unauthorized from unauthorized
@@ -259,9 +255,9 @@ class WeatherFlowForecastWeatherData:
                 _LOGGER.debug(notreadyerror)
                 raise ConfigEntryNotReady from notreadyerror
 
-            if not resp or not station_info:
+            if not sensor_data or not station_info:
                 raise CannotConnect()
-            self.sensor_data = resp
+            self.sensor_data = sensor_data
             self.station_data = station_info
             if not self.sensor_data.data_available:
                 _LOGGER.warning(

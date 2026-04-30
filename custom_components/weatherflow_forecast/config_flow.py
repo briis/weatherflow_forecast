@@ -69,7 +69,8 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
             )
             if user_input[CONF_ADD_SENSORS]:
                 sensor_data = cast(
-                    WeatherFlowSensorData, await weatherflow_api.async_fetch_sensor_data()
+                    WeatherFlowSensorData,
+                    await weatherflow_api.async_fetch_sensor_data(),
                 )
                 if not sensor_data.data_available:
                     errors["base"] = "offline_error"
@@ -141,7 +142,10 @@ class WeatherFlowForecastOptionsFlowHandler(config_entries.OptionsFlow):
         if user_input is not None:
             self.hass.config_entries.async_update_entry(
                 self._config_entry,
-                data={**self._config_entry.data, CONF_API_TOKEN: user_input[CONF_API_TOKEN]},
+                data={
+                    **self._config_entry.data,
+                    CONF_API_TOKEN: user_input[CONF_API_TOKEN],
+                },
             )
             return self.async_create_entry(
                 title="",

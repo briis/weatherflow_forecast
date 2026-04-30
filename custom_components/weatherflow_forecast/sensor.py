@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 
 from dataclasses import dataclass
-from typing import Any
+from datetime import datetime
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -35,10 +35,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-)
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util.dt import utc_from_timestamp
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
@@ -62,7 +59,7 @@ from .const import (
 )
 
 
-@dataclass
+@dataclass(frozen=True)
 class WeatherFlowSensorEntityDescription(SensorEntityDescription):
     """Describes WeatherFlow sensor entity."""
 
@@ -453,7 +450,7 @@ async def async_setup_entry(
     if coordinator.data.sensor_data is None:
         return
 
-    entities: list[WeatherFlowSensor[Any]] = [
+    entities: list[WeatherFlowSensor] = [
         WeatherFlowSensor(coordinator, description, config_entry)
         for description in SENSOR_TYPES
         if getattr(coordinator.data.sensor_data, description.key, None) is not None
@@ -462,10 +459,12 @@ async def async_setup_entry(
     async_add_entities(entities, False)
 
 
-class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
+class WeatherFlowSensor(
+    CoordinatorEntity[WeatherFlowForecastDataUpdateCoordinator], SensorEntity
+):  # type: ignore[misc]
     """A WeatherFlow sensor."""
 
-    entity_description: WeatherFlowSensorEntityDescription
+    entity_description: WeatherFlowSensorEntityDescription  # type: ignore[override]
     _attr_has_entity_name = True
 
     def __init__(
@@ -476,13 +475,16 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
     ) -> None:
         """Initialize a WeatherFlow sensor."""
         super().__init__(coordinator)
-        self.entity_description = description
+        self.entity_description = description  # type: ignore[override]
         self._config = config
         self._coordinator = coordinator
+        station_data = (
+            self._coordinator.data.station_data if self._coordinator.data else None
+        )
         self._hw_version = (
             " - Not Available"
-            if self._coordinator.data.station_data.firmware_revision is None
-            else self._coordinator.data.station_data.firmware_revision
+            if station_data is None or station_data.firmware_revision is None
+            else station_data.firmware_revision
         )
 
         self._attr_device_info = DeviceInfo(
@@ -498,7 +500,7 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
         self._attr_unique_id = f"{config.data[CONF_STATION_ID]} {description.key}"
 
     @property
-    def native_unit_of_measurement(self) -> str | None:
+    def native_unit_of_measurement(self) -> str | None:  # type: ignore[override]
         """Return unit of sensor."""
 
         if self.entity_description.key == "air_density":
@@ -510,7 +512,7 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
         return super().native_unit_of_measurement
 
     @property
-    def native_value(self) -> StateType:
+    def native_value(self) -> StateType | datetime:  # type: ignore[override]
         """Return state of the sensor."""
 
         if self.entity_description.key in TIMESTAMP_SENSORS:
@@ -527,6 +529,8 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
                 if self.coordinator.data.sensor_data
                 else None
             )
+            if raw_data is None:
+                return None
             return (
                 raw_data
                 if self.hass.config.units is METRIC_SYSTEM
@@ -540,7 +544,7 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
         )
 
     @property
-    def extra_state_attributes(self) -> None:
+    def extra_state_attributes(self) -> dict | None:  # type: ignore[override]
         """Return non standard attributes."""
 
         if self.entity_description.key == "power_save_mode":
@@ -571,12 +575,17 @@ class WeatherFlowSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
                 if self.coordinator.data.sensor_data
                 else None
             )
-            if sensor_value is not None:
+            station_data = (
+                self._coordinator.data.station_data if self._coordinator.data else None
+            )
+            if sensor_value is not None and station_data is not None:
                 return {
-                    ATTR_HW_FIRMWARE_REVISION: self._coordinator.data.station_data.firmware_revision,
-                    ATTR_HW_SERIAL_NUMBER: self._coordinator.data.station_data.serial_number,
+                    ATTR_HW_FIRMWARE_REVISION: station_data.firmware_revision,
+                    ATTR_HW_SERIAL_NUMBER: station_data.serial_number,
                     ATTR_HW_STATION_ID: str(self._config.data[CONF_STATION_ID]),
                 }
+
+        return None
 
     async def async_added_to_hass(self):
         """When entity is added to hass."""
