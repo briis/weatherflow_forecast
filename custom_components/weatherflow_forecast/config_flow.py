@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import voluptuous as vol
-from typing import Any
+from typing import Any, cast
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 from homeassistant.core import callback
@@ -64,12 +64,12 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 )
             )
 
-            station_data: WeatherFlowStationData = (
-                await weatherflow_api.async_get_station()
+            station_data = cast(
+                WeatherFlowStationData, await weatherflow_api.async_get_station()
             )
             if user_input[CONF_ADD_SENSORS]:
-                sensor_data: WeatherFlowSensorData = (
-                    await weatherflow_api.async_fetch_sensor_data()
+                sensor_data = cast(
+                    WeatherFlowSensorData, await weatherflow_api.async_fetch_sensor_data()
                 )
                 if not sensor_data.data_available:
                     errors["base"] = "offline_error"
