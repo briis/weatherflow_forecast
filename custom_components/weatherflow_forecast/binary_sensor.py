@@ -5,8 +5,6 @@ from __future__ import annotations
 import logging
 
 from dataclasses import dataclass
-from types import MappingProxyType
-from typing import Any
 
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
@@ -14,17 +12,11 @@ from homeassistant.components.binary_sensor import (
     BinarySensorEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    CONF_NAME,
-)
+from homeassistant.const import CONF_NAME
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import StateType
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-)
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import WeatherFlowForecastDataUpdateCoordinator
 from .const import (
@@ -36,7 +28,7 @@ from .const import (
 )
 
 
-@dataclass
+@dataclass(frozen=True)
 class WeatherFlowBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Describes WeatherFlow binary sensor entity."""
 
@@ -80,10 +72,10 @@ async def async_setup_entry(
         config_entry.entry_id
     ]
 
-    if coordinator.data.sensor_data == {}:
+    if coordinator.data.sensor_data is None:
         return
 
-    entities: list[WeatherFlowBinarySensor[Any]] = [
+    entities: list[WeatherFlowBinarySensor] = [
         WeatherFlowBinarySensor(coordinator, description, config_entry)
         for description in BINARY_SENSOR_TYPES
         if getattr(coordinator.data.sensor_data, description.key) is not None
@@ -92,29 +84,32 @@ async def async_setup_entry(
     async_add_entities(entities, False)
 
 
-class WeatherFlowBinarySensor(
-    CoordinatorEntity[DataUpdateCoordinator], BinarySensorEntity
+class WeatherFlowBinarySensor(  # type: ignore[misc]
+    CoordinatorEntity[WeatherFlowForecastDataUpdateCoordinator], BinarySensorEntity
 ):
     """A WeatherFlow binary sensor."""
 
-    entity_description: WeatherFlowBinarySensorEntityDescription
+    entity_description: WeatherFlowBinarySensorEntityDescription  # type: ignore[override]
     _attr_has_entity_name = True
 
     def __init__(
         self,
         coordinator: WeatherFlowForecastDataUpdateCoordinator,
         description: WeatherFlowBinarySensorEntityDescription,
-        config: MappingProxyType[str, Any],
+        config: ConfigEntry,
     ) -> None:
         """Initialize a WeatherFlow binary sensor."""
         super().__init__(coordinator)
-        self.entity_description = description
+        self.entity_description = description  # type: ignore[override]
         self._config = config
         self._coordinator = coordinator
+        station_data = (
+            self._coordinator.data.station_data if self._coordinator.data else None
+        )
         self._hw_version = (
             " - Not Available"
-            if self._coordinator.data.station_data.firmware_revision is None
-            else self._coordinator.data.station_data.firmware_revision
+            if station_data is None or station_data.firmware_revision is None
+            else station_data.firmware_revision
         )
 
         self._attr_device_info = DeviceInfo(
@@ -130,12 +125,12 @@ class WeatherFlowBinarySensor(
         self._attr_unique_id = f"{config.data[CONF_STATION_ID]} {description.key}"
 
     @property
-    def is_on(self) -> StateType:
+    def is_on(self) -> bool | None:  # type: ignore[override]
         """Return state of the sensor."""
 
         return (
             getattr(self.coordinator.data.sensor_data, self.entity_description.key)
-            if self.coordinator.data.sensor_data
+            if self.coordinator.data and self.coordinator.data.sensor_data
             else None
         )
 

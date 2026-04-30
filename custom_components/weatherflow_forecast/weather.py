@@ -5,13 +5,13 @@ from __future__ import annotations
 import logging
 
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Any
+from typing import Any, cast
 
 from homeassistant.components.weather import (
-    DOMAIN as WEATHER_DOMAIN,
+    DOMAIN as WEATHER_DOMAIN,  # type: ignore[attr-defined]
     Forecast,
     SingleCoordinatorWeatherEntity,
-    WeatherEntityFeature,
+    WeatherEntityFeature,  # type: ignore[attr-defined]
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
@@ -53,13 +53,8 @@ async def async_setup_entry(
     ]
     entity_registry = er.async_get(hass)
 
-    name: str | None
     is_metric = hass.config.units is METRIC_SYSTEM
-
-    if (name := config_entry.data.get(CONF_NAME)) and name is None:
-        name = DEFAULT_NAME
-    elif TYPE_CHECKING:
-        assert isinstance(name, str)
+    name: str = str(config_entry.data.get(CONF_NAME, DEFAULT_NAME))
 
     entities = [
         WeatherFlowWeather(coordinator, config_entry.data, False, name, is_metric)
@@ -130,61 +125,85 @@ class WeatherFlowWeather(
         )
 
     @property
-    def condition(self) -> str | None:
-        """Return the current condition."""
-        condition = self.coordinator.data.current_weather_data.icon
-        if condition is None:
-            return None
-        return condition
+    def _current_weather(self):
+        return (
+            self.coordinator.data.current_weather_data
+            if self.coordinator.data
+            else None
+        )
 
     @property
-    def native_temperature(self) -> float | None:
+    def _sensor(self):
+        return self.coordinator.data.sensor_data if self.coordinator.data else None
+
+    @property
+    def condition(self) -> str | None:  # type: ignore[override]
+        """Return the current condition."""
+        d = self._current_weather
+        return d.icon if d else None
+
+    @property
+    def native_temperature(self) -> float | None:  # type: ignore[override]
         """Return the temperature."""
         if self.coordinator.add_sensors:
-            return self.coordinator.data.sensor_data.air_temperature
-        return self.coordinator.data.current_weather_data.temperature
+            d = self._sensor
+            return d.air_temperature if d else None
+        d = self._current_weather
+        return d.temperature if d else None
 
     @property
-    def native_pressure(self) -> float | None:
+    def native_pressure(self) -> float | None:  # type: ignore[override]
         """Return the pressure."""
         if self.coordinator.add_sensors:
-            return self.coordinator.data.sensor_data.sea_level_pressure
-        return self.coordinator.data.current_weather_data.pressure
+            d = self._sensor
+            return d.sea_level_pressure if d else None
+        d = self._current_weather
+        return d.pressure if d else None
 
     @property
-    def humidity(self) -> float | None:
+    def humidity(self) -> float | None:  # type: ignore[override]
         """Return the humidity."""
         if self.coordinator.add_sensors:
-            return self.coordinator.data.sensor_data.relative_humidity
-        return self.coordinator.data.current_weather_data.humidity
+            d = self._sensor
+            return d.relative_humidity if d else None
+        d = self._current_weather
+        return d.humidity if d else None
 
     @property
-    def native_wind_speed(self) -> float | None:
+    def native_wind_speed(self) -> float | None:  # type: ignore[override]
         """Return the wind speed."""
         if self.coordinator.add_sensors:
-            return self.coordinator.data.sensor_data.wind_avg
-        return self.coordinator.data.current_weather_data.wind_speed
+            d = self._sensor
+            return d.wind_avg if d else None
+        d = self._current_weather
+        return d.wind_speed if d else None
 
     @property
-    def wind_bearing(self) -> float | str | None:
+    def wind_bearing(self) -> float | str | None:  # type: ignore[override]
         """Return the wind direction."""
         if self.coordinator.add_sensors:
-            return self.coordinator.data.sensor_data.wind_direction
-        return self.coordinator.data.current_weather_data.wind_bearing
+            d = self._sensor
+            return d.wind_direction if d else None
+        d = self._current_weather
+        return d.wind_bearing if d else None
 
     @property
-    def native_wind_gust_speed(self) -> float | None:
+    def native_wind_gust_speed(self) -> float | None:  # type: ignore[override]
         """Return the wind gust speed in native units."""
         if self.coordinator.add_sensors:
-            return self.coordinator.data.sensor_data.wind_gust
-        return self.coordinator.data.current_weather_data.wind_gust_speed
+            d = self._sensor
+            return d.wind_gust if d else None
+        d = self._current_weather
+        return d.wind_gust_speed if d else None
 
     @property
-    def native_dew_point(self) -> float | None:
+    def native_dew_point(self) -> float | None:  # type: ignore[override]
         """Return the dew point."""
         if self.coordinator.add_sensors:
-            return self.coordinator.data.sensor_data.dew_point
-        return self.coordinator.data.current_weather_data.dew_point
+            d = self._sensor
+            return d.dew_point if d else None
+        d = self._current_weather
+        return d.dew_point if d else None
 
     def _forecast(self, hourly: bool) -> list[Forecast] | None:
         """Return the forecast array."""
@@ -223,7 +242,7 @@ class WeatherFlowWeather(
                     "native_wind_speed": native_wind_speed,
                     "uv_index": uv_index,
                 }
-                ha_forecast.append(ha_item)
+                ha_forecast.append(cast(Forecast, ha_item))
         else:
             for item in self.coordinator.data.daily_forecast:
                 condition = item.icon
@@ -251,7 +270,7 @@ class WeatherFlowWeather(
                     "native_wind_speed": native_wind_speed,
                     "native_wind_gust_speed": native_wind_gust_speed,
                 }
-                ha_forecast.append(ha_item)
+                ha_forecast.append(cast(Forecast, ha_item))
 
         return ha_forecast
 
