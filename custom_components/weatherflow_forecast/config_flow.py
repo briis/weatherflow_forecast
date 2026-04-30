@@ -1,4 +1,5 @@
 """Config flow to configure WeatherFlow Forecast component."""
+
 from __future__ import annotations
 
 import logging
@@ -34,6 +35,7 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
+
 class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Config Flow for WeatherFlow Forecast."""
 
@@ -57,13 +59,20 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         try:
             weatherflow_api = await self.hass.async_add_executor_job(
-                lambda: WeatherFlow(user_input[CONF_STATION_ID],
-                                    user_input[CONF_API_TOKEN], session=session)
+                lambda: WeatherFlow(
+                    user_input[CONF_STATION_ID],
+                    user_input[CONF_API_TOKEN],
+                    session=session,
+                )
             )
 
-            station_data: WeatherFlowStationData = await weatherflow_api.async_get_station()
+            station_data: WeatherFlowStationData = (
+                await weatherflow_api.async_get_station()
+            )
             if user_input[CONF_ADD_SENSORS]:
-                sensor_data: WeatherFlowSensorData = await weatherflow_api.async_fetch_sensor_data()
+                sensor_data: WeatherFlowSensorData = (
+                    await weatherflow_api.async_fetch_sensor_data()
+                )
                 if not sensor_data.data_available:
                     errors["base"] = "offline_error"
                     return await self._show_setup_form(errors)
@@ -100,7 +109,7 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
             options={
                 CONF_FORECAST_HOURS: user_input[CONF_FORECAST_HOURS],
                 CONF_ADD_SENSORS: user_input[CONF_ADD_SENSORS],
-            }
+            },
         )
 
     async def _show_setup_form(self, errors=None):
@@ -111,12 +120,15 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required(CONF_STATION_ID): str,
                     vol.Required(CONF_API_TOKEN): str,
-                    vol.Optional(CONF_FORECAST_HOURS, default=DEFAULT_FORECAST_HOURS): vol.All(vol.Coerce(int), vol.Range(min=12, max=96)),
+                    vol.Optional(
+                        CONF_FORECAST_HOURS, default=DEFAULT_FORECAST_HOURS
+                    ): vol.All(vol.Coerce(int), vol.Range(min=12, max=96)),
                     vol.Optional(CONF_ADD_SENSORS, default=DEFAULT_ADD_SENSOR): bool,
                 }
             ),
             errors=errors or {},
         )
+
 
 class WeatherFlowForecastOptionsFlowHandler(config_entries.OptionsFlow):
     """Options Flow for WeatherFlow Forecast component."""
@@ -145,9 +157,22 @@ class WeatherFlowForecastOptionsFlowHandler(config_entries.OptionsFlow):
             step_id="init",
             data_schema=vol.Schema(
                 {
-                    vol.Required(CONF_API_TOKEN, default=self._config_entry.data.get(CONF_API_TOKEN, "")): str,
-                    vol.Optional(CONF_FORECAST_HOURS, default=self._config_entry.options.get(CONF_FORECAST_HOURS, DEFAULT_FORECAST_HOURS)): vol.All(vol.Coerce(int), vol.Range(min=12, max=96)),
-                    vol.Optional(CONF_ADD_SENSORS, default=self._config_entry.options.get(CONF_ADD_SENSORS, DEFAULT_ADD_SENSOR)): bool,
+                    vol.Required(
+                        CONF_API_TOKEN,
+                        default=self._config_entry.data.get(CONF_API_TOKEN, ""),
+                    ): str,
+                    vol.Optional(
+                        CONF_FORECAST_HOURS,
+                        default=self._config_entry.options.get(
+                            CONF_FORECAST_HOURS, DEFAULT_FORECAST_HOURS
+                        ),
+                    ): vol.All(vol.Coerce(int), vol.Range(min=12, max=96)),
+                    vol.Optional(
+                        CONF_ADD_SENSORS,
+                        default=self._config_entry.options.get(
+                            CONF_ADD_SENSORS, DEFAULT_ADD_SENSOR
+                        ),
+                    ): bool,
                 }
-            )
+            ),
         )

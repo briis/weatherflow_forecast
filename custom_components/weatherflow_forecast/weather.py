@@ -1,4 +1,5 @@
 """Support for WeatherFlow Forecast weather service."""
+
 from __future__ import annotations
 
 import logging
@@ -35,18 +36,21 @@ from .const import (
     DEFAULT_NAME,
     DOMAIN,
     MANUFACTURER,
-    MODEL
+    MODEL,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
+
 async def async_setup_entry(
-        hass: HomeAssistant,
-        config_entry: ConfigEntry,
-        async_add_entities: AddEntitiesCallback,
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Add a weather entity from a config_entry."""
-    coordinator: WeatherFlowForecastDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    coordinator: WeatherFlowForecastDataUpdateCoordinator = hass.data[DOMAIN][
+        config_entry.entry_id
+    ]
     entity_registry = er.async_get(hass)
 
     name: str | None
@@ -57,19 +61,21 @@ async def async_setup_entry(
     elif TYPE_CHECKING:
         assert isinstance(name, str)
 
-    entities = [WeatherFlowWeather(coordinator, config_entry.data,
-                                   False, name, is_metric)]
+    entities = [
+        WeatherFlowWeather(coordinator, config_entry.data, False, name, is_metric)
+    ]
 
     # Add hourly entity to legacy config entries
     if entity_registry.async_get_entity_id(
-        WEATHER_DOMAIN,
-        DOMAIN,
-        _calculate_unique_id(config_entry.data, True)
+        WEATHER_DOMAIN, DOMAIN, _calculate_unique_id(config_entry.data, True)
     ):
         name = f"{name} hourly"
-        entities.append(WeatherFlowWeather(coordinator, config_entry.data, True, name, is_metric))
+        entities.append(
+            WeatherFlowWeather(coordinator, config_entry.data, True, name, is_metric)
+        )
 
     async_add_entities(entities)
+
 
 def _calculate_unique_id(config: MappingProxyType[str, Any], hourly: bool) -> str:
     """Calculate unique ID."""
@@ -79,12 +85,13 @@ def _calculate_unique_id(config: MappingProxyType[str, Any], hourly: bool) -> st
 
     return f"{config[CONF_STATION_ID]}{name_appendix}"
 
-class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataUpdateCoordinator]):
+
+class WeatherFlowWeather(
+    SingleCoordinatorWeatherEntity[WeatherFlowForecastDataUpdateCoordinator]
+):
     """Implementation of a WeatherFlow weather condition."""
 
-    _attr_attribution = (
-        ATTR_ATTRIBUTION
-    )
+    _attr_attribution = ATTR_ATTRIBUTION
     _attr_has_entity_name = True
     _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_native_precipitation_unit = UnitOfPrecipitationDepth.MILLIMETERS
@@ -95,12 +102,12 @@ class WeatherFlowWeather(SingleCoordinatorWeatherEntity[WeatherFlowForecastDataU
     )
 
     def __init__(
-            self,
-            coordinator: WeatherFlowForecastDataUpdateCoordinator,
-            config: MappingProxyType[str, Any],
-            hourly: bool,
-            name: str,
-            is_metric: bool,
+        self,
+        coordinator: WeatherFlowForecastDataUpdateCoordinator,
+        config: MappingProxyType[str, Any],
+        hourly: bool,
+        name: str,
+        is_metric: bool,
     ) -> None:
         """Initialise the platform with a data instance and station."""
         super().__init__(coordinator)

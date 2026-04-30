@@ -1,4 +1,5 @@
 """WeatherFlow Forecast Platform."""
+
 from __future__ import annotations
 
 from datetime import timedelta
@@ -23,7 +24,11 @@ from pyweatherflow_forecast import (
 from homeassistant.config_entries import ConfigEntry, ConfigEntryState
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import HomeAssistantError, ConfigEntryNotReady, Unauthorized
+from homeassistant.exceptions import (
+    HomeAssistantError,
+    ConfigEntryNotReady,
+    Unauthorized,
+)
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -44,17 +49,25 @@ PLATFORMS = [Platform.WEATHER, Platform.SENSOR, Platform.BINARY_SENSOR]
 
 _LOGGER = logging.getLogger(__name__)
 
+
 def _get_platforms(config_entry: ConfigEntry):
 
-    add_sensors = DEFAULT_ADD_SENSOR if config_entry.options.get(
-        CONF_ADD_SENSORS) is None else config_entry.options.get(CONF_ADD_SENSORS)
+    add_sensors = (
+        DEFAULT_ADD_SENSOR
+        if config_entry.options.get(CONF_ADD_SENSORS) is None
+        else config_entry.options.get(CONF_ADD_SENSORS)
+    )
 
     return add_sensors
 
+
 def _get_forecast_hours(config_entry: ConfigEntry):
 
-    forecast_hours = DEFAULT_FORECAST_HOURS if config_entry.options.get(
-        CONF_FORECAST_HOURS) is None else config_entry.options.get(CONF_FORECAST_HOURS)
+    forecast_hours = (
+        DEFAULT_FORECAST_HOURS
+        if config_entry.options.get(CONF_FORECAST_HOURS) is None
+        else config_entry.options.get(CONF_FORECAST_HOURS)
+    )
 
     return forecast_hours
 
@@ -69,7 +82,8 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     forecast_hours = _get_forecast_hours(config_entry)
 
     coordinator = WeatherFlowForecastDataUpdateCoordinator(
-        hass, config_entry, add_sensors, forecast_hours)
+        hass, config_entry, add_sensors, forecast_hours
+    )
     if ConfigEntryState == ConfigEntryState.SETUP_IN_PROGRESS:
         await coordinator.async_config_entry_first_refresh()
     else:
@@ -87,6 +101,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
 
     return True
 
+
 async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Unload a config entry."""
 
@@ -98,6 +113,7 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
 
     return unload_ok
 
+
 async def async_update_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     """Reload WeatherFlow Forecast component when options changed."""
     await hass.config_entries.async_reload(config_entry.entry_id)
@@ -106,27 +122,34 @@ async def async_update_entry(hass: HomeAssistant, config_entry: ConfigEntry):
 async def cleanup_old_device(hass: HomeAssistant, station_id) -> None:
     """Cleanup device without proper device identifier."""
     device_reg = dr.async_get(hass)
-    device = device_reg.async_get_device(
-        identifiers={(DOMAIN, station_id)})  # type: ignore[arg-type]
+    device = device_reg.async_get_device(identifiers={(DOMAIN, station_id)})  # type: ignore[arg-type]
     if device:
         _LOGGER.debug("Removing deselected sensors: %s", device.name)
         device_reg.async_remove_device(device.id)
-    device = device_reg.async_get_device(
-        identifiers={(DOMAIN, f"{station_id}_binary")})  # type: ignore[arg-type]
+    device = device_reg.async_get_device(identifiers={(DOMAIN, f"{station_id}_binary")})  # type: ignore[arg-type]
     if device:
         _LOGGER.debug("Removing deselected sensors: %s", device.name)
         device_reg.async_remove_device(device.id)
+
 
 class CannotConnect(HomeAssistantError):
     """Unable to connect to the web site."""
 
+
 class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching WeatherFlow data."""
 
-    def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry, add_sensors: bool, forecast_hours: int) -> None:
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        config_entry: ConfigEntry,
+        add_sensors: bool,
+        forecast_hours: int,
+    ) -> None:
         """Initialize global WeatherFlow forecast data updater."""
         self.weather = WeatherFlowForecastWeatherData(
-            hass, config_entry.data, add_sensors, forecast_hours)
+            hass, config_entry.data, add_sensors, forecast_hours
+        )
         self.weather.initialize_data()
         self.hass = hass
         self.config_entry = config_entry
@@ -138,7 +161,13 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator):
         else:
             update_interval = timedelta(minutes=randrange(25, 35))
 
-        super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=update_interval, config_entry=config_entry)
+        super().__init__(
+            hass,
+            _LOGGER,
+            name=DOMAIN,
+            update_interval=update_interval,
+            config_entry=config_entry,
+        )
 
     async def _async_update_data(self) -> WeatherFlowForecastWeatherData:
         """Fetch data from WeatherFlow Forecast."""
@@ -151,7 +180,13 @@ class WeatherFlowForecastDataUpdateCoordinator(DataUpdateCoordinator):
 class WeatherFlowForecastWeatherData:
     """Keep data for WeatherFlow Forecast entity data."""
 
-    def __init__(self, hass: HomeAssistant, config: MappingProxyType[str, Any], add_sensors: bool, forecast_hours: int) -> None:
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        config: MappingProxyType[str, Any],
+        add_sensors: bool,
+        forecast_hours: int,
+    ) -> None:
         """Initialise the weather entity data."""
         self.hass = hass
         self._config = config
@@ -168,7 +203,12 @@ class WeatherFlowForecastWeatherData:
         """Establish connection to API."""
 
         self._weather_data = WeatherFlow(
-            str(self._config[CONF_STATION_ID]), self._config[CONF_API_TOKEN], elevation=self.hass.config.elevation, session=async_get_clientsession(self.hass), forecast_hours=self._forecast_hours)
+            str(self._config[CONF_STATION_ID]),
+            self._config[CONF_API_TOKEN],
+            elevation=self.hass.config.elevation,
+            session=async_get_clientsession(self.hass),
+            forecast_hours=self._forecast_hours,
+        )
 
         return True
 
@@ -176,7 +216,9 @@ class WeatherFlowForecastWeatherData:
         """Fetch data from API - (current weather and forecast)."""
 
         try:
-            resp: WeatherFlowForecastData = await self._weather_data.async_get_forecast()
+            resp: WeatherFlowForecastData = (
+                await self._weather_data.async_get_forecast()
+            )
         except WeatherFlowForecastWongStationId as unauthorized:
             _LOGGER.debug(unauthorized)
             raise Unauthorized from unauthorized
@@ -198,8 +240,12 @@ class WeatherFlowForecastWeatherData:
 
         if self._add_sensors:
             try:
-                resp: WeatherFlowSensorData = await self._weather_data.async_fetch_sensor_data()
-                station_info: WeatherFlowStationData = await self._weather_data.async_get_station()
+                resp: WeatherFlowSensorData = (
+                    await self._weather_data.async_fetch_sensor_data()
+                )
+                station_info: WeatherFlowStationData = (
+                    await self._weather_data.async_get_station()
+                )
             except WeatherFlowForecastWongStationId as unauthorized:
                 _LOGGER.debug(unauthorized)
                 raise Unauthorized from unauthorized
@@ -219,6 +265,7 @@ class WeatherFlowForecastWeatherData:
             self.station_data = station_info
             if not self.sensor_data.data_available:
                 _LOGGER.warning(
-                    "Weather Station either is offline or no recent observations from station. Remove Sensors to avoid this warning.")
+                    "Weather Station either is offline or no recent observations from station. Remove Sensors to avoid this warning."
+                )
 
         return self
