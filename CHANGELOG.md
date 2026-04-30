@@ -1,3 +1,19 @@
+## Release 1.1.0
+
+Date: `2026-04-30`
+
+### What Changed
+
+> [!NOTE]
+> As my Tempest Device broke during my recent House Move, I have not had the chance to test this for real. Currently I don't have plans to aquire a new device so this will heavily limit my ability to support this going forward.
+
+
+* Fixing issue [#303](https://github.com/briis/weatherflow_forecast/issues/303)
+* Fixing issue [#238](https://github.com/briis/weatherflow_forecast/issues/238)
+* Fixing issue [#219](https://github.com/briis/weatherflow_forecast/issues/219)
+  * Above all related to Config Data not being updated if changes are made after initial setup.
+* Refactor the code to clean out wrong type definitions and make compatible with HA >= 2026.4
+
 ## Release 1.0.13
 
 Date: `2025-01-14`
