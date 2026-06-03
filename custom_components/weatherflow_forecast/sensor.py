@@ -217,7 +217,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         name="Precipitation last hour",
         native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         device_class=SensorDeviceClass.PRECIPITATION,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
@@ -225,7 +225,7 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         name="Precipitation today",
         native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         device_class=SensorDeviceClass.PRECIPITATION,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,
     ),
     WeatherFlowSensorEntityDescription(
