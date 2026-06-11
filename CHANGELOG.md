@@ -1,3 +1,15 @@
+## Release 1.0.16
+
+Date: `2026-06-11`
+
+### What Changed
+
+> [!NOTE]
+> As my Tempest Device broke during my recent House Move, I have not had the chance to test this for real. Currently I don't have plans to aquire a new device so this will heavily limit my ability to support this going forward.
+
+
+* Merging [#337](https://github.com/briis/weatherflow_forecast/pull/337) to correct the State Class to MEASUREMENT_ANGLE as this is needs to go with the new device class WIND_DIRECTION.Thank you @itsjustdeepred
+
 ## Release 1.0.15
 
 Date: `2026-06-11`
