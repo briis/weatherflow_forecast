@@ -1,4 +1,17 @@
-## Release 1.1.0
+## Release 1.0.15
+
+Date: `2026-06-11`
+
+### What Changed
+
+> [!NOTE]
+> As my Tempest Device broke during my recent House Move, I have not had the chance to test this for real. Currently I don't have plans to aquire a new device so this will heavily limit my ability to support this going forward.
+
+
+* Merging [#336](https://github.com/briis/weatherflow_forecast/pull/336) to add device class WIND_DIRECTION to the Wind Direction sensor. Thank you @Twenty5Schmeckels
+* Some changes to the Development Environment to keep it up to date with latest versions
+
+## Release 1.0.14
 
 Date: `2026-04-30`
 
