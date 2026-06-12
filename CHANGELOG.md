@@ -1,3 +1,15 @@
+## Release 1.0.17
+
+Date: `2026-06-12`
+
+### What Changed
+
+> [!NOTE]
+> As my Tempest Device broke during my recent House Move, I have not had the chance to test this for real. Currently I don't have plans to aquire a new device so this will heavily limit my ability to support this going forward.
+
+
+* Fixing issue [#338](https://github.com/briis/weatherflow_forecast/issues/338)
+
 ## Release 1.0.16
 
 Date: `2026-06-11`
