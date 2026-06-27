@@ -19,17 +19,20 @@ jobs:
     name: "Ruff"
     runs-on: "ubuntu-latest"
     steps:
-        - name: "Checkout the repository"
-          uses: "actions/checkout@v7.0.0"
+      - name: Checkout the repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-        - name: "Set up Python"
-          uses: actions/setup-python@v6.2.0
-          with:
-            python-version: "3.14"
-            cache: "pip"
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.14"
+          cache: "pip"
 
-        - name: "Install requirements"
-          run: python3 -m pip install -r requirements.txt
+      - name: Install ruff
+        run: python3 -m pip install ruff==0.15.19
 
-        - name: "Run"
-          run: python3 -m ruff check .
+      - name: Lint
+        run: python3 -m ruff check .
+
+      - name: Format
+        run: python3 -m ruff format . --check
