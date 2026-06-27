@@ -14,6 +14,9 @@ Home Assistant integration for WeatherFlow Cloud Based Data using the REST API
   <img width="384" height="128" src="https://github.com/briis/weatherflow_forecast/blob/main/images/logo@2x.png?raw=true">
 </p>
 
+> [!IMPORTANT]
+> I am amazed by this community. A member just donated me a brand new Tempest station, and I can now continue supporting this Integration. THANK YOU VERY MUCH!
+
 This integration adds support for retrieving the Forecast, Current condition and optionally realtime data from [WeatherFlow](https://shop.weatherflow.com/products/tempest). It replaces [WeatherFlow Weather for Home Assistant](https://github.com/briis/hass-weatherflow) that will soon be deprecated.
 
 For this integration you **must own a WeatherFlow weather station** and you must create a **personal API Token** that work with your weather station. [See this link](https://weatherflow.github.io/Tempest/api/) for a description on how to retrieve the API Token.
