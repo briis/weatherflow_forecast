@@ -5,7 +5,7 @@ Date: `2026-06-27`
 ### What Changed
 
 > [!IMPORTANT]
-> I am amazed by this community. I member just donated me a brand new Tempest station, and I can now continue supporting this Integration. THANK YOU VERY MUCH!
+> I am amazed by this community. A member just donated me a brand new Tempest station, and I can now continue supporting this Integration. THANK YOU VERY MUCH!
 
 * Migrate legacy integer unique_id to string on setup. Closes #345. Thank you @EmmyAllEars
 * Various minor Dev Environment changes.
