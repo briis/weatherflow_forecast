@@ -1,3 +1,12 @@
+## Release 1.0.19
+
+Date: `2026-07-02`
+
+### What Changed
+
+- Fixing "Intermittent Update failed: 'time' (KeyError) from the hourly forecast parser
+ ". Closing [pyweatherflow_forecast #34](https://github.com/briis/pyweatherflow_forecast/issues/34) Thank you @EmmyAllEars
+
 ## Release 1.0.18
 
 Date: `2026-06-27`
