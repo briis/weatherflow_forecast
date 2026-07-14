@@ -1,3 +1,17 @@
+# Changelog
+
+All notable changes to this project are documented here. Format loosely
+follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
+
+## [1.0.20] - 2026-07-14
+
+### Changes
+
+- Reverting previous change of State Class for the Precipitation Today sensor. The correct State Class for this type of sensor is TOTAL_INCREASING. Here is why:
+<br/>
+For long-term statistics correctness, the exact reset instant doesn't actually need to be midnight — what matters is the state_class. Right now precip_accum_local_day uses SensorStateClass.MEASUREMENT, which is the wrong class for a value that accumulates and periodically drops back to zero. SensorStateClass.TOTAL_INCREASING is designed exactly for this (like daily energy counters): HA's recorder detects any drop in value as a reset and excludes that delta from the sum, so it doesn't matter if the actual reset is picked up a few minutes after midnight — the LTS "sum" statistic still comes out correct.<br/>
+This closes [#348](https://github.com/briis/weatherflow_forecast/issues/348)
+
 ## Release 1.0.19
 
 Date: `2026-07-02`
