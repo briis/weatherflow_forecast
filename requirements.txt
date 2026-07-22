@@ -1,8 +1,8 @@
-colorlog==6.10.1
+colorlog==6.11.0
 homeassistant==2026.7.2
-aiohasupervisor>=0.5.0
+aiohasupervisor>=0.6.0
 pip>=26.1.2,<26.2
-ruff==0.15.21
+ruff==0.15.22
 pyweatherflow-forecast==1.2.1
 numpy
 zlib_ng
