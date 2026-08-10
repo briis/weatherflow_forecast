@@ -1,7 +1,7 @@
 colorlog==6.12.0
 homeassistant==2026.8.1
 aiohasupervisor>=0.6.0
-pip>=26.2,<26.3
+pip>=26.2.1,<26.3
 ruff==0.16.1
 pyweatherflow-forecast==1.2.1
 numpy
