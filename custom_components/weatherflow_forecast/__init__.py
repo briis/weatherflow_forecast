@@ -159,9 +159,7 @@ async def async_migrate_station_id(
         entity_reg.async_update_entity(entry.entity_id, new_unique_id=new_unique_id)
 
     device_reg = dr.async_get(hass)
-    for device in dr.async_entries_for_config_entry(
-        device_reg, config_entry.entry_id
-    ):
+    for device in dr.async_entries_for_config_entry(device_reg, config_entry.entry_id):
         new_identifiers = set()
         changed = False
         for identifier in device.identifiers:
