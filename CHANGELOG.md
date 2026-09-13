@@ -3,6 +3,13 @@
 All notable changes to this project are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 
+## [Unreleased]
+
+### Changes
+
+- Added a Reconfigure option to the integration entry, so a Station ID (and API Token) can be updated in place — e.g. after a failed station is replaced with a new one — without losing existing entities, history or customizations. Home Assistant's entity and device registries are migrated to the new Station ID automatically as part of this.
+- Fixed duplicate-Station-ID protection during initial setup, which was silently not being enforced.
+
 ## [1.0.20] - 2026-07-14
 
 ### Changes

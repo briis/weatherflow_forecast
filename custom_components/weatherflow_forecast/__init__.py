@@ -30,6 +30,7 @@ from homeassistant.exceptions import (
     Unauthorized,
 )
 from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.loader import async_get_integration
@@ -130,6 +131,54 @@ async def cleanup_old_device(hass: HomeAssistant, station_id) -> None:
     if device:
         _LOGGER.debug("Removing deselected sensors: %s", device.name)
         device_reg.async_remove_device(device.id)
+
+
+async def async_migrate_station_id(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    old_station_id: str,
+    new_station_id: str,
+) -> None:
+    """Move entities and devices from an old Station ID to a new one.
+
+    Used when a physical station is replaced and WeatherFlow issues a new
+    Station ID for it. Entity/device unique IDs and device identifiers are
+    built with the Station ID as a prefix (see sensor.py, binary_sensor.py
+    and weather.py), so they are rewritten here to keep the existing
+    entity_ids, names, history and customizations intact instead of
+    Home Assistant treating the reconfigured station as brand new hardware.
+    """
+    if old_station_id == new_station_id:
+        return
+
+    entity_reg = er.async_get(hass)
+    for entry in er.async_entries_for_config_entry(entity_reg, config_entry.entry_id):
+        if not entry.unique_id.startswith(old_station_id):
+            continue
+        new_unique_id = new_station_id + entry.unique_id[len(old_station_id) :]
+        entity_reg.async_update_entity(entry.entity_id, new_unique_id=new_unique_id)
+
+    device_reg = dr.async_get(hass)
+    for device in dr.async_entries_for_config_entry(
+        device_reg, config_entry.entry_id
+    ):
+        new_identifiers = set()
+        changed = False
+        for identifier in device.identifiers:
+            if len(identifier) != 2 or identifier[0] != DOMAIN:
+                new_identifiers.add(identifier)
+                continue
+            ident = identifier[1]
+            if ident == old_station_id:
+                new_identifiers.add((DOMAIN, new_station_id))
+                changed = True
+            elif ident == f"{old_station_id}_binary":
+                new_identifiers.add((DOMAIN, f"{new_station_id}_binary"))
+                changed = True
+            else:
+                new_identifiers.add(identifier)
+        if changed:
+            device_reg.async_update_device(device.id, new_identifiers=new_identifiers)
 
 
 class CannotConnect(HomeAssistantError):

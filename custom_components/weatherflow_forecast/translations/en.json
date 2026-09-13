@@ -1,14 +1,16 @@
 {
     "config": {
         "abort": {
-            "unique_id": "WeatherFlow Location has already been configured."
+            "unique_id": "WeatherFlow Location has already been configured.",
+            "reconfigure_successful": "The Station ID and/or API Token were updated successfully."
         },
         "error": {
             "wrong_station_id": "The Station ID entered is not correct. Check that you are not using Device ID.",
             "server_error": "WeatherFlow servers encountered an unexpected error",
             "wrong_token": "The API Token is incorrect or does not match the Station ID.",
             "offline_error": "Station either is offline or no recent observations. Check station status or remove Sensors and try again.",
-            "bad_request": "An unknown error occurred when retrieving data."
+            "bad_request": "An unknown error occurred when retrieving data.",
+            "unique_id": "This Station ID is already used by another WeatherFlow Forecast entry."
         },
         "step": {
             "user": {
@@ -19,6 +21,14 @@
                     "api_token": "Personal Api Token",
                     "forecast_hours": "Hours to show in Hourly Forecast",
                     "add_sensors": "Add sensors from the Weather Station"
+                }
+            },
+            "reconfigure": {
+                "description": "Update the Station ID and/or API Token, for example after replacing a failed station with a new one. Your existing entities, history and customizations are kept.",
+                "title": "Reconfigure WeatherFlow Forecast",
+                "data": {
+                    "station_id": "Station Id",
+                    "api_token": "Personal Api Token"
                 }
             }
         }

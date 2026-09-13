@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import homeassistant; print\\(homeassistant.__file__\\)\")",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}
