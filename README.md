@@ -87,6 +87,17 @@ To add WeatherFlow Forecast to your installation, do the following:
 
 You can configure more than 1 instance of the Integration by using a different Station ID.
 
+### Reconfiguring an existing entry
+
+If your API Token changes, or you replace your weather station and get a new Station ID, you don't have to remove and re-add the integration. Instead, use the Reconfigure option to update the existing entry, keeping all its entities, history and customizations intact:
+
+- Go to Configuration and Integrations
+- Find your WeatherFlow Forecast entry and click the three-dot menu on it.
+- Select **Reconfigure**.
+- Enter the new `Station ID` and/or `API Token` and click SUBMIT.
+
+Your entities and devices are automatically migrated to the new Station ID, so they keep the same entity IDs, names, history and customizations instead of appearing as new hardware.
+
 
 ## Available Sensors
 
