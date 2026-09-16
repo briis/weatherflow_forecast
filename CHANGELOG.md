@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 
+## [1.1.1] - Unreleased
+
+### Changes
+
+- Optimised the config flow's Station ID/API Token validation: reuse Home Assistant's shared HTTP session instead of creating a new one on every submission, construct the API client directly instead of dispatching it to the executor thread pool, and check for a duplicate Station ID before making any network calls so a mistaken entry fails fast.
+
 ## [1.1.0] - 2026-09-16
 
 ### Changes
