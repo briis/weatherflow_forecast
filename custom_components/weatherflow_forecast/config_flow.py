@@ -8,7 +8,7 @@ from typing import Any, cast
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 from homeassistant.core import callback
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from pyweatherflow_forecast import (
     WeatherFlow,
     WeatherFlowStationData,
@@ -56,15 +56,13 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
         None; on failure station_data is None and error_key names the
         translation key to show on the form.
         """
-        session = async_create_clientsession(self.hass)
+        session = async_get_clientsession(self.hass)
 
         try:
-            weatherflow_api = await self.hass.async_add_executor_job(
-                lambda: WeatherFlow(
-                    station_id,
-                    api_token,
-                    session=session,
-                )
+            weatherflow_api = WeatherFlow(
+                station_id,
+                api_token,
+                session=session,
             )
 
             station_data = cast(
@@ -98,6 +96,9 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
             return await self._show_setup_form()
 
+        await self.async_set_unique_id(str(user_input[CONF_STATION_ID]))
+        self._abort_if_unique_id_configured(error="unique_id")
+
         station_data, error = await self._async_validate_and_fetch(
             user_input[CONF_STATION_ID],
             user_input[CONF_API_TOKEN],
@@ -105,9 +106,6 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
         )
         if error:
             return await self._show_setup_form({"base": error})
-
-        await self.async_set_unique_id(str(user_input[CONF_STATION_ID]))
-        self._abort_if_unique_id_configured(error="unique_id")
 
         return self.async_create_entry(
             title=station_data.station_name,
@@ -137,6 +135,13 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
             return self._show_reconfigure_form(reconfigure_entry)
 
+        new_station_id = str(user_input[CONF_STATION_ID])
+        existing_entry = self.hass.config_entries.async_entry_for_domain_unique_id(
+            DOMAIN, new_station_id
+        )
+        if existing_entry and existing_entry.entry_id != reconfigure_entry.entry_id:
+            return self._show_reconfigure_form(reconfigure_entry, {"base": "unique_id"})
+
         add_sensors = reconfigure_entry.options.get(
             CONF_ADD_SENSORS, DEFAULT_ADD_SENSOR
         )
@@ -145,13 +150,6 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
         )
         if error:
             return self._show_reconfigure_form(reconfigure_entry, {"base": error})
-
-        new_station_id = str(user_input[CONF_STATION_ID])
-        existing_entry = self.hass.config_entries.async_entry_for_domain_unique_id(
-            DOMAIN, new_station_id
-        )
-        if existing_entry and existing_entry.entry_id != reconfigure_entry.entry_id:
-            return self._show_reconfigure_form(reconfigure_entry, {"base": "unique_id"})
 
         old_station_id = str(reconfigure_entry.data[CONF_STATION_ID])
         await async_migrate_station_id(
