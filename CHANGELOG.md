@@ -3,6 +3,13 @@
 All notable changes to this project are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 
+## [1.1.1] - Unreleased
+
+### Changes
+
+- Optimised the config flow's Station ID/API Token validation: reuse Home Assistant's shared HTTP session instead of creating a new one on every submission, construct the API client directly instead of dispatching it to the executor thread pool, and check for a duplicate Station ID before making any network calls so a mistaken entry fails fast.
+- Optimised the data update coordinator: Station metadata (firmware revision, serial number, name) is now fetched once per coordinator lifetime instead of being re-requested from the WeatherFlow API on every poll, and the remaining sensor/station requests are made concurrently instead of sequentially.
+
 ## [1.1.0] - 2026-09-16
 
 ### Changes
