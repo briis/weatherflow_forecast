@@ -38,10 +38,12 @@ PRECIPITATION_TYPE_DESCRIPTION = [
     "Heavy Rain/Hail",
 ]
 
-TIMESTAMP_SENSORS = [
-    "lightning_strike_last_epoch",
-    "timestamp",
-]
+TIMESTAMP_SENSORS = frozenset(
+    {
+        "lightning_strike_last_epoch",
+        "timestamp",
+    }
+)
 
 STARTUP = """
 -------------------------------------------------------------------

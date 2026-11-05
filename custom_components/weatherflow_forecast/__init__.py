@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from datetime import timedelta
 import logging
 from random import randrange
@@ -293,14 +294,17 @@ class WeatherFlowForecastWeatherData:
 
         if self._add_sensors:
             try:
-                sensor_data = cast(
-                    WeatherFlowSensorData,
-                    await self._weather_data.async_fetch_sensor_data(),
-                )
-                station_info = cast(
-                    WeatherFlowStationData,
-                    await self._weather_data.async_get_station(),
-                )
+                # Station metadata (firmware/serial/name) rarely changes, so it is
+                # only fetched once per coordinator lifetime instead of on every
+                # poll, unlike the sensor data which is always fetched fresh.
+                if self.station_data is None:
+                    sensor_data, station_info = await asyncio.gather(
+                        self._weather_data.async_fetch_sensor_data(),
+                        self._weather_data.async_get_station(),
+                    )
+                    self.station_data = cast(WeatherFlowStationData, station_info)
+                else:
+                    sensor_data = await self._weather_data.async_fetch_sensor_data()
             except WeatherFlowForecastWongStationId as unauthorized:
                 _LOGGER.debug(unauthorized)
                 raise Unauthorized from unauthorized
@@ -314,10 +318,9 @@ class WeatherFlowForecastWeatherData:
                 _LOGGER.debug(notreadyerror)
                 raise ConfigEntryNotReady from notreadyerror
 
-            if not sensor_data or not station_info:
+            if not sensor_data or not self.station_data:
                 raise CannotConnect()
-            self.sensor_data = sensor_data
-            self.station_data = station_info
+            self.sensor_data = cast(WeatherFlowSensorData, sensor_data)
             if not self.sensor_data.data_available:
                 _LOGGER.warning(
                     "Weather Station either is offline or no recent observations from station. Remove Sensors to avoid this warning."

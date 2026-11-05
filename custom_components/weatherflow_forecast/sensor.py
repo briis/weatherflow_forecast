@@ -459,7 +459,7 @@ async def async_setup_entry(
     async_add_entities(entities, False)
 
 
-class WeatherFlowSensor(
+class WeatherFlowSensor(  # pyright: ignore[reportIncompatibleVariableOverride]
     CoordinatorEntity[WeatherFlowForecastDataUpdateCoordinator], SensorEntity
 ):  # type: ignore[misc]
     """A WeatherFlow sensor."""
