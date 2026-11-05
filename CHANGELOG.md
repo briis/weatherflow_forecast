@@ -9,6 +9,10 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 
 - Optimised the config flow's Station ID/API Token validation: reuse Home Assistant's shared HTTP session instead of creating a new one on every submission, construct the API client directly instead of dispatching it to the executor thread pool, and check for a duplicate Station ID before making any network calls so a mistaken entry fails fast.
 - Optimised the data update coordinator: Station metadata (firmware revision, serial number, name) is now fetched once per coordinator lifetime instead of being re-requested from the WeatherFlow API on every poll, and the remaining sensor/station requests are made concurrently instead of sequentially.
+- Removed the deprecated `CONN_CLASS_CLOUD_POLL` constant from the config flow, which logged a deprecation warning on Home Assistant 2026.11 (it is removed in 2027.5). The connection type is already declared through `iot_class` in the manifest.
+- The config flow now uses `probatio`, the validation library Home Assistant switched to in 2026.10, and falls back to `voluptuous` on earlier Home Assistant versions.
+- Entering a non-numeric Station ID during setup or reconfiguration now shows the "wrong Station ID" error instead of failing the flow.
+- Fixed type-checking errors in the config flow and sensor platform.
 
 ## [1.1.0] - 2026-09-16
 

@@ -3,8 +3,17 @@
 from __future__ import annotations
 
 import logging
-import voluptuous as vol
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
+
+if TYPE_CHECKING:
+    import probatio as vol
+else:
+    try:
+        # HA 2026.10+ replaced voluptuous with probatio as the validation engine.
+        import probatio as vol
+    except ImportError:  # pragma: no cover - HA versions prior to 2026.10
+        import voluptuous as vol
+
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 from homeassistant.core import callback
@@ -39,7 +48,6 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Config Flow for WeatherFlow Forecast."""
 
     VERSION = 1
-    CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
 
     @staticmethod
     @callback
@@ -49,18 +57,17 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def _async_validate_and_fetch(
         self, station_id: str, api_token: str, add_sensors: bool
-    ) -> tuple[WeatherFlowStationData | None, str | None]:
+    ) -> WeatherFlowStationData | str:
         """Validate a Station ID/API Token pair against the WeatherFlow API.
 
-        Returns a tuple of (station_data, error_key). On success error_key is
-        None; on failure station_data is None and error_key names the
-        translation key to show on the form.
+        Returns the station data on success, or on failure a string naming
+        the translation key of the error to show on the form.
         """
         session = async_get_clientsession(self.hass)
 
         try:
             weatherflow_api = WeatherFlow(
-                station_id,
+                int(station_id),
                 api_token,
                 session=session,
             )
@@ -74,21 +81,24 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
                     await weatherflow_api.async_fetch_sensor_data(),
                 )
                 if not sensor_data.data_available:
-                    return None, "offline_error"
+                    return "offline_error"
+        except ValueError:
+            _LOGGER.debug("Station ID %s is not a number", station_id)
+            return "wrong_station_id"
         except WeatherFlowForecastWongStationId as err:
             _LOGGER.debug(err)
-            return None, "wrong_station_id"
+            return "wrong_station_id"
         except WeatherFlowForecastBadRequest as err:
             _LOGGER.debug(err)
-            return None, "bad_request"
+            return "bad_request"
         except WeatherFlowForecastInternalServerError as err:
             _LOGGER.debug(err)
-            return None, "server_error"
+            return "server_error"
         except WeatherFlowForecastUnauthorized as err:
             _LOGGER.debug("401 Error: %s", err)
-            return None, "wrong_token"
+            return "wrong_token"
 
-        return station_data, None
+        return station_data
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None):
         """Handle a flow initialized by the user."""
@@ -99,13 +109,13 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
         await self.async_set_unique_id(str(user_input[CONF_STATION_ID]))
         self._abort_if_unique_id_configured(error="unique_id")
 
-        station_data, error = await self._async_validate_and_fetch(
+        station_data = await self._async_validate_and_fetch(
             user_input[CONF_STATION_ID],
             user_input[CONF_API_TOKEN],
             user_input[CONF_ADD_SENSORS],
         )
-        if error:
-            return await self._show_setup_form({"base": error})
+        if isinstance(station_data, str):
+            return await self._show_setup_form({"base": station_data})
 
         return self.async_create_entry(
             title=station_data.station_name,
@@ -145,11 +155,13 @@ class WeatherFlowForecastHandler(config_entries.ConfigFlow, domain=DOMAIN):
         add_sensors = reconfigure_entry.options.get(
             CONF_ADD_SENSORS, DEFAULT_ADD_SENSOR
         )
-        station_data, error = await self._async_validate_and_fetch(
+        station_data = await self._async_validate_and_fetch(
             user_input[CONF_STATION_ID], user_input[CONF_API_TOKEN], add_sensors
         )
-        if error:
-            return self._show_reconfigure_form(reconfigure_entry, {"base": error})
+        if isinstance(station_data, str):
+            return self._show_reconfigure_form(
+                reconfigure_entry, {"base": station_data}
+            )
 
         old_station_id = str(reconfigure_entry.data[CONF_STATION_ID])
         await async_migrate_station_id(
