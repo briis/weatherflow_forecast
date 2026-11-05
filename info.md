@@ -11,7 +11,7 @@ Home Assistant integration for WeatherFlow Cloud Based Data using the REST API
 <a href="https://www.buymeacoffee.com/briis" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;" ></a>
 
 <p align="center">
-  <img width="384" height="128" src="https://github.com/briis/weatherflow_forecast/blob/main/images/logo@2x.png?raw=true">
+  <img width="384" height="128" src="https://github.com/briis/weatherflow_forecast/blob/main/custom_components/weatherflow_forecast/brand/logo@2x.png?raw=true">
 </p>
 
 This integration adds support for retrieving the Forecast, Current condition and optionally realtime data from [WeatherFlow](https://shop.weatherflow.com/products/tempest). It replaces [WeatherFlow Weather for Home Assistant](https://github.com/briis/hass-weatherflow) that will soon be deprecated.
