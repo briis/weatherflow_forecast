@@ -29,7 +29,7 @@ jobs:
           cache: "pip"
 
       - name: Install ruff
-        run: python3 -m pip install ruff==0.15.19
+        run: python3 -m pip install "$(grep -E '^ruff==' requirements.txt)"
 
       - name: Lint
         run: python3 -m ruff check .
