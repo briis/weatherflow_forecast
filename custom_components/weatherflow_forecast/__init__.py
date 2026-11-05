@@ -99,7 +99,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
 
     if not add_sensors:
-        await cleanup_old_device(hass, str(config_entry.data[CONF_STATION_ID]))
+        await cleanup_old_device(
+            hass, str(config_entry.data[CONF_STATION_ID]), config_entry.entry_id
+        )
 
     return True
 
@@ -121,17 +123,18 @@ async def async_update_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     await hass.config_entries.async_reload(config_entry.entry_id)
 
 
-async def cleanup_old_device(hass: HomeAssistant, station_id) -> None:
+async def cleanup_old_device(
+    hass: HomeAssistant, station_id, config_entry_id: str
+) -> None:
     """Cleanup device without proper device identifier."""
     device_reg = dr.async_get(hass)
-    device = device_reg.async_get_device(identifiers={(DOMAIN, station_id)})  # type: ignore[arg-type]
-    if device:
-        _LOGGER.debug("Removing deselected sensors: %s", device.name)
-        device_reg.async_remove_device(device.id)
-    device = device_reg.async_get_device(identifiers={(DOMAIN, f"{station_id}_binary")})  # type: ignore[arg-type]
-    if device:
-        _LOGGER.debug("Removing deselected sensors: %s", device.name)
-        device_reg.async_remove_device(device.id)
+    stale_identifiers = {(DOMAIN, station_id), (DOMAIN, f"{station_id}_binary")}
+    # Look devices up per config entry, as identifiers are no longer unique
+    # across config entries (device_registry.async_get_device is deprecated).
+    for device in dr.async_entries_for_config_entry(device_reg, config_entry_id):
+        if device.identifiers & stale_identifiers:
+            _LOGGER.debug("Removing deselected sensors: %s", device.name)
+            device_reg.async_remove_device(device.id)
 
 
 async def async_migrate_station_id(

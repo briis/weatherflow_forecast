@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 
+## [Unreleased]
+
+### Changes
+
+- Replaced the deprecated `device_registry.async_get_device` calls in the old-device cleanup with a lookup scoped to the config entry, which logged a deprecation warning on Home Assistant startup (it stops working in 2027.8). Fixes #391.
+
 ## [1.1.1] - 2026-11-05
 
 ### Changes
